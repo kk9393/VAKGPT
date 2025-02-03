@@ -1,0 +1,370 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+/* Dark theme  */
+.VAKChatBaseStyleDark h1 {
+  @apply text-gray-100 text-4xl font-bold !important;
+  margin-top: 24px !important;
+  margin-bottom: 16px !important;
+}
+
+.VAKChatBaseStyleDark h2 {
+  @apply text-gray-100 text-3xl font-semibold !important;
+  margin-top: 24px !important;
+  margin-bottom: 16px !important;
+}
+
+.VAKChatBaseStyleDark h3 {
+  @apply text-gray-100 text-2xl font-medium !important;
+  margin-top: 20px !important;
+  margin-bottom: 12px !important;
+}
+
+.VAKChatBaseStyleDark h4 {
+  @apply text-gray-100 text-xl font-medium !important;
+  margin-top: 16px !important;
+  margin-bottom: 12px !important;
+}
+
+.VAKChatBaseStyleDark h5 {
+  @apply text-gray-100 text-lg font-medium !important;
+  margin-top: 16px !important;
+  margin-bottom: 8px !important;
+}
+
+.VAKChatBaseStyleDark h6 {
+  @apply text-gray-100 text-base font-medium !important;
+  margin-top: 12px !important;
+  margin-bottom: 8px !important;
+}
+
+.VAKChatBaseStyleDark p {
+  @apply text-gray-100 text-base font-normal !important;
+}
+
+.VAKChatBaseStyleDark div {
+  @apply text-gray-100 text-base font-normal;
+}
+
+.VAKChatBaseStyleDark span {
+  @apply text-gray-500 text-sm font-normal !important;
+}
+
+.VAKChatBaseStyleDark ul {
+  @apply text-gray-100 list-disc !important;
+  padding-left: 8px !important;
+  margin-top: 8px !important;
+  margin-bottom: 8px !important;
+}
+
+@media (min-width: 640px) {
+  .VAKChatBaseStyleDark ul {
+    padding-left: 8px !important;
+  }
+}
+
+.VAKChatBaseStyleDark ol {
+  @apply text-gray-100 list-decimal !important;
+  padding-left: 8px !important;
+  margin-top: 8px !important;
+  margin-bottom: 8px !important;
+}
+
+@media (min-width: 640px) {
+  .VAKChatBaseStyleDark ol {
+    padding-left: 8px !important;
+  }
+}
+
+.VAKChatBaseStyleDark li {
+  @apply text-gray-100 font-normal text-base !important;
+  margin-bottom: 8px !important;
+}
+
+.VAKChatBaseStyleDark blockquote {
+  @apply text-gray-100 border-l-4 border-gray-700 italic text-base !important;
+  padding-left: 16px !important;
+  margin-bottom: 16px !important;
+}
+
+.VAKChatBaseStyleDark pre {
+  @apply text-gray-100 bg-gray-800 rounded-lg overflow-x-auto text-sm font-mono my-2 !important;
+  padding: "16px" !important;
+}
+
+.VAKChatBaseStyleDark code {
+  @apply text-gray-100 bg-gray-800 rounded font-mono text-sm !important;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+.VAKChatBaseStyleDark a {
+  @apply text-gray-100 underline hover:text-gray-500 text-base !important;
+}
+
+.VAKChatBaseStyleDark table {
+  @apply text-gray-100 min-w-full border-collapse text-base text-base !important;
+  margin-bottom: 16px !important;
+}
+
+.VAKChatBaseStyleDark th {
+  @apply text-gray-100 bg-gray-900 font-semibold border border-gray-200 text-base !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.VAKChatBaseStyleDark td {
+  @apply text-gray-100 border border-gray-200 text-base !important;
+  border-bottom: 1px solid #2d3748 !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.VAKChatBaseStyleDark hr {
+  @apply text-gray-700 border-t-0 border-gray-300 !important;
+  margin-top: 16px !important;
+  margin-bottom: 16px !important;
+}
+
+.VAKChatBaseStyleDark strong {
+  @apply text-gray-100 font-bold text-base !important;
+}
+
+.VAKChatBaseStyleDark em {
+  @apply text-gray-100 italic !important;
+}
+
+.VAKChatBaseStyleDark del {
+  @apply text-gray-100 line-through !important;
+}
+
+.VAKChatBaseStyleDark sup {
+  @apply text-gray-100 align-super text-xs !important;
+}
+
+.VAKChatBaseStyleDark sub {
+  @apply text-gray-100 align-sub text-xs !important;
+}
+
+.VAKChatBaseStyleDark caption {
+  @apply text-gray-100 text-sm text-gray-500 !important;
+  margin-top: 8px !important;
+}
+
+.VAKChatBaseStyleDark textarea {
+  @apply text-gray-100 border-0 resize-none w-full focus:outline-none focus:border-0 bg-gray-900 focus:bg-gray-800 text-base font-normal !important;
+  border: none !important;
+  outline: none !important;
+  margin: 0 !important;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  border-radius: 24px !important;
+}
+
+.VAKChatBaseStyleDark button {
+  height: auto !important;
+  width: auto !important;
+  line-height: normal !important;
+}
+
+.VAKChatBaseStyleDark textarea:focus {
+  border: none !important;
+  outline: none !important;
+}
+
+.VAKChatBaseStyleDark textarea:hover {
+  border: none !important;
+  outline: none !important;
+}
+/* Dark theme end */
+
+/* Light theme */
+.VAKChatBaseStyleLight h1 {
+  @apply text-gray-900 text-4xl font-bold !important;
+  margin-top: 24px !important;
+  margin-bottom: 16px !important;
+}
+
+.VAKChatBaseStyleLight h2 {
+  @apply text-gray-900 text-3xl font-semibold !important;
+  margin-top: 24px !important;
+  margin-bottom: 16px !important;
+}
+
+.VAKChatBaseStyleLight h3 {
+  @apply text-gray-900 text-2xl font-medium !important;
+  margin-top: 20px !important;
+  margin-bottom: 12px !important;
+}
+
+.VAKChatBaseStyleLight h4 {
+  @apply text-gray-900 text-xl font-medium !important;
+  margin-top: 16px !important;
+  margin-bottom: 12px !important;
+}
+
+.VAKChatBaseStyleLight h5 {
+  @apply text-gray-900 text-lg font-medium !important;
+  margin-top: 16px !important;
+  margin-bottom: 8px !important;
+}
+
+.VAKChatBaseStyleLight h6 {
+  @apply text-gray-900 text-base font-medium !important;
+  margin-top: 12px !important;
+  margin-bottom: 8px !important;
+}
+
+.VAKChatBaseStyleLight p {
+  @apply text-gray-900 text-base font-normal !important;
+}
+
+.VAKChatBaseStyleLight div {
+  @apply text-gray-900 text-base font-normal;
+}
+
+.VAKChatBaseStyleLight span {
+  @apply text-gray-500 text-sm font-normal !important;
+}
+
+.VAKChatBaseStyleLight ul {
+  @apply text-gray-900 list-disc !important;
+  padding-left: 8px !important;
+  margin-top: 8px !important;
+  margin-bottom: 8px !important;
+}
+@media (min-width: 640px) {
+  .VAKChatBaseStyleLight ul {
+    padding-left: 8px !important;
+  }
+}
+
+.VAKChatBaseStyleLight ol {
+  @apply text-gray-900 list-decimal !important;
+  padding-left: 8px !important;
+  margin-top: 8px !important;
+  margin-bottom: 8px !important;
+}
+
+@media (min-width: 640px) {
+  .VAKChatBaseStyleLight ol {
+    padding-left: 8px !important;
+  }
+}
+
+.VAKChatBaseStyleLight li {
+  @apply text-gray-900 font-normal text-base !important;
+  margin-bottom: 8px !important;
+}
+
+.VAKChatBaseStyleLight blockquote {
+  @apply text-gray-900 border-l-4 border-gray-300 italic text-base !important;
+  padding-left: 16px !important;
+  margin-bottom: 16px !important;
+}
+
+.VAKChatBaseStyleLight pre {
+  @apply text-gray-900 bg-gray-200  rounded-lg overflow-x-auto text-sm font-mono my-2 !important;
+  padding: 16px !important;
+}
+
+.VAKChatBaseStyleLight code {
+  @apply text-gray-900 bg-gray-200 rounded font-mono text-sm !important;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+.VAKChatBaseStyleLight a {
+  @apply text-gray-900 underline hover:text-gray-500 text-base !important;
+}
+
+.VAKChatBaseStyleLight table {
+  @apply text-gray-900 min-w-full border-collapse text-base text-base !important;
+  margin-bottom: 16px !important;
+}
+
+.VAKChatBaseStyleLight th {
+  @apply text-gray-900 bg-gray-100 font-semibold border border-gray-200 text-base !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.VAKChatBaseStyleLight td {
+  @apply text-gray-900 border border-gray-200 text-base !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.VAKChatBaseStyleLight hr {
+  @apply text-gray-300 border-t-0 border-gray-300 !important;
+  margin-top: 16px !important;
+  margin-bottom: 16px !important;
+}
+
+.VAKChatBaseStyleLight strong {
+  @apply text-gray-900 font-bold text-base !important;
+}
+
+.VAKChatBaseStyleLight em {
+  @apply text-gray-900 italic !important;
+}
+
+.VAKChatBaseStyleLight del {
+  @apply text-gray-900 line-through !important;
+}
+
+.VAKChatBaseStyleLight sup {
+  @apply text-gray-900 align-super text-xs !important;
+}
+
+.VAKChatBaseStyleLight sub {
+  @apply text-gray-900 align-sub text-xs !important;
+}
+
+.VAKChatBaseStyleLight caption {
+  @apply text-gray-900 text-sm text-gray-500 !important;
+  margin-top: 8px !important;
+}
+
+.VAKChatBaseStyleLight textarea {
+  @apply text-gray-900 border-0 resize-none w-full focus:outline-none focus:border-0 bg-gray-100 focus:bg-gray-200 text-base font-normal !important;
+  border: none !important;
+  outline: none !important;
+  margin: 0 !important;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  border-radius: 24px !important;
+}
+
+.VAKChatBaseStyleLight button {
+  height: auto !important;
+  width: auto !important;
+  line-height: normal !important;
+}
+
+.VAKChatBaseStyleDark textarea:focus {
+  border: none !important;
+  outline: none !important;
+}
+
+.VAKChatBaseStyleDark textarea:hover {
+  border: none !important;
+  outline: none !important;
+}
+/* Light theme end */

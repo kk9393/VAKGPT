@@ -40,7 +40,7 @@ export default function Home() {
             />
             <span>VAKGPT</span>
           </div>
-          <div className="flex space-x-8 justify-items-center">
+          <div className="flex space-x-8 items-center">
             <a href="/chat">Chat</a>
             <a
               href="https://github.com/kk9393/VAKGPT"
