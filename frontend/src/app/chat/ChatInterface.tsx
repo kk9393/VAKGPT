@@ -1,10 +1,10 @@
 "use client";
 
 import { RefObject, useEffect, useRef, useState } from "react";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import Image from "next/image";
 import { ArrowUp } from "lucide-react";
 import { marked } from "marked";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import styles from "./index.module.css";
 
 // Message interface to handle chat messages
@@ -136,9 +136,7 @@ export function ChatInterface({}) {
     setUserScrolledUp(false);
     try {
       const response = await fetch(
-        `http://localhost:8000/api/chat?message=${encodeURIComponent(
-          message
-        )}`
+        `http://localhost:8000/api/chat?message=${encodeURIComponent(message)}`
       );
       if (!response.ok) {
         const errorBody = await response.json();

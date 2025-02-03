@@ -1,3 +1,5 @@
+import json
+import base64
 from fastapi import HTTPException
 from fastapi.responses import StreamingResponse
 from dotenv import load_dotenv
@@ -23,10 +25,13 @@ async def chat(message: str):
             try:
                 async for chunk in model.astream(messages):
                     if chunk.content:
-                        yield f"data: {chunk.content}\n\n"
-                yield "data: [DONE]\n\n"  # Indicate end of stream
+                        encoded_content = base64.b64encode(chunk.content.encode()).decode()
+                        json_data = json.dumps({"content": encoded_content})
+                        yield f"data: {json_data}\n\n"
+                yield "data: " + json.dumps({"is_stream_finished": True}) + "\n\n"  # Indicate end of stream
             except Exception as e:
-                yield f"data: Error: {str(e)}\n\n"
+                error_json = json.dumps({"error": str(e)})
+                yield f"data: {error_json}\n\n"
 
         return StreamingResponse(generate(), media_type="text/event-stream")
 
