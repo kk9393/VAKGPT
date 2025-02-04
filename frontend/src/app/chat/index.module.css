@@ -87,7 +87,7 @@
 }
 
 .VAKChatBaseStyleDark pre {
-  @apply text-gray-100 bg-gray-800 rounded-lg overflow-x-auto text-sm font-mono my-2 !important;
+  @apply text-gray-100 bg-gray-800 rounded-lg overflow-x-auto text-sm font-mono my-4 !important;
   padding: "16px" !important;
 }
 
@@ -104,7 +104,7 @@
 }
 
 .VAKChatBaseStyleDark table {
-  @apply text-gray-100 min-w-full border-collapse text-base text-base !important;
+  @apply text-gray-100 min-w-full border-collapse text-base text-base my-4 !important;
   margin-bottom: 16px !important;
 }
 
@@ -271,7 +271,7 @@
 }
 
 .VAKChatBaseStyleLight pre {
-  @apply text-gray-900 bg-gray-200  rounded-lg overflow-x-auto text-sm font-mono my-2 !important;
+  @apply text-gray-900 bg-gray-200  rounded-lg overflow-x-auto text-sm font-mono my-4 !important;
   padding: 16px !important;
 }
 
@@ -288,7 +288,7 @@
 }
 
 .VAKChatBaseStyleLight table {
-  @apply text-gray-900 min-w-full border-collapse text-base text-base !important;
+  @apply text-gray-900 min-w-full border-collapse text-base text-base my-4 !important;
   margin-bottom: 16px !important;
 }
 

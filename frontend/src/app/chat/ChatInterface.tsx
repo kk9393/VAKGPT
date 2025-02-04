@@ -140,6 +140,7 @@ export function ChatInterface({}) {
       );
       if (!response.ok) {
         const errorBody = await response.json();
+        ongoingMessageIdRef.current = null;
         updateOngoingMessage(
           "ERROR: " + (errorBody.message || "An unknown error occurred.")
         );
@@ -147,6 +148,7 @@ export function ChatInterface({}) {
         return;
       }
       if (!response.body) {
+        ongoingMessageIdRef.current = null;
         updateOngoingMessage(
           "ERROR: Response body is null, unable to read stream."
         );
@@ -185,6 +187,7 @@ export function ChatInterface({}) {
                 break;
               }
             } catch (error) {
+              ongoingMessageIdRef.current = null;
               updateOngoingMessage(`ERROR: ${(error as Error).message}`);
               setisResponseStreaming(false);
             }
@@ -194,6 +197,7 @@ export function ChatInterface({}) {
       };
       await reader.read().then(processText);
     } catch (error: unknown) {
+      ongoingMessageIdRef.current = null;
       updateOngoingMessage(`ERROR: ${(error as Error).message}`);
       setisResponseStreaming(false);
     }
@@ -397,7 +401,7 @@ const InputContainer: React.FC<InputContainerProps> = ({
             ref={inputRef}
             value={userMessage}
             autoComplete="off"
-            placeholder="How can I assist you today?"
+            placeholder="Message VAKGPT"
             onChange={handleInputChange}
             onKeyDown={handleKeyDownInput}
             className="w-full resize-none text-gray-900 bg-gray-100 focus:bg-gray-200 dark:text-gray-100 dark:bg-gray-900 dark:focus:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 border-none outline-none p-3 rounded-3xl dynamic-text-base font-normal"
