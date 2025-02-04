@@ -7,6 +7,7 @@ import { marked } from "marked";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import styles from "./index.module.css";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // Message interface to handle chat messages
 interface Message {
   id: string;
@@ -136,7 +137,7 @@ export function ChatInterface({}) {
     setUserScrolledUp(false);
     try {
       const response = await fetch(
-        `http://localhost:8000/api/chat?message=${encodeURIComponent(message)}`
+        `${API_BASE_URL}/api/chat?message=${encodeURIComponent(message)}`
       );
       if (!response.ok) {
         const errorBody = await response.json();
