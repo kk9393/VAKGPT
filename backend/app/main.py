@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.app.routes import chat_route, hello_route
+from app.routes import hello_route, auth_route, chat_route
 
 app = FastAPI()
 
@@ -14,6 +14,7 @@ app.add_middleware(
 )
 
 app.include_router(hello_route.router, prefix="/api")
+app.include_router(auth_route.router, prefix="/api")
 app.include_router(chat_route.router, prefix="/api")
 
 if __name__ == "__main__":
