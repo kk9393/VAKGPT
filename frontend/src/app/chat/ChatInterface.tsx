@@ -136,7 +136,7 @@ export function ChatInterface({}) {
     setUserScrolledUp(false);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/chat?message=${encodeURIComponent(message)}&session_id=testtessttest&uid=tesstuid&model=meta-llama/Meta-Llama-3.1-405B-Instruct`
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/chat?message=${encodeURIComponent(message)}&session_id=test_session&uid=test_uid&model=deepseek-chat`
       );
       if (!response.ok) {
         const errorBody = await response.json();
