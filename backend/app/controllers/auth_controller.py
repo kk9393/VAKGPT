@@ -1,7 +1,10 @@
+import jwt as pyjwt
+import datetime
 import secrets
 import string
 from fastapi.responses import RedirectResponse, JSONResponse
 from app.models.user_model import User
+from app.config.settings import settings
 from app.services.auth_service import (
     get_oauth_provider_url,
     exchange_code_for_token,
@@ -27,9 +30,6 @@ async def login(provider: str):
 
 async def callback(provider: str, code: str):
     """Handle OAuth callback and authenticate user"""
-    if provider != "google":
-        return JSONResponse(content={"error": "Only Google login is supported"}, status_code=400)
-
     token_data = await exchange_code_for_token(provider, code)
     access_token = token_data.get("access_token")
 
@@ -40,26 +40,30 @@ async def callback(provider: str, code: str):
 
     if not user_info:
         return JSONResponse(content={"error": "Failed to fetch user data"}, status_code=400)
-    
-    print("this is the user data boss ########")
-    print(user_info)
 
-    # Ensure email is present
     email = user_info.get("email")
-    if not email:
-        return JSONResponse(content={"error": "Email not found."}, status_code=400)
+    name = user_info.get("name", "Unknown")
 
     user_id = generate_userid()
-
     user = User(
         userid=user_id,
         name=user_info.get("name", "Unknown"),
         email=email,  # Now guaranteed to be present
         profile_picture=user_info.get("avatar_url"),
         provider=provider,
-        access_token=access_token,
-        refresh_token=token_data.get("refresh_token")
     )
 
     await save_user(user.dict())
-    return JSONResponse(content={"message": "Login successful", "user": user.dict()})
+
+    payload = {
+        "userid": user_id,
+        "name": name,
+        "email": email,
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=7)  # Expires in 7 days
+    }
+    jwt_token = pyjwt.encode(payload, settings.JWT_SECRET_KEY, algorithm="HS256")
+
+    redirect_url = f"http://localhost:3000/chat?token={jwt_token}"
+    print(f"🔄 Redirecting to: {redirect_url}")
+
+    return RedirectResponse(url=redirect_url, status_code=303)

@@ -7,5 +7,3 @@ class User(BaseModel):
     email: str
     profile_picture: Optional[str] = None
     provider: str
-    access_token: str
-    refresh_token: Optional[str] = None

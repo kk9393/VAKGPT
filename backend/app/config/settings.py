@@ -11,5 +11,6 @@ class Settings:
     GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
     REDIRECT_URI_GOOGLE = os.getenv("REDIRECT_URI_GOOGLE")
     REDIRECT_URI_GITHUB = os.getenv("REDIRECT_URI_GITHUB")
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 
 settings = Settings()
