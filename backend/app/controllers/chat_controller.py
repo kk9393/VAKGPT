@@ -35,11 +35,11 @@ async def chat_prepare(
 
         return chat_flow
 
-async def chat(message: str):
+async def chat(message: str, session_id: str, uid: str, model:str):
     try:
-        chat_flow = await chat_prepare(uid="test_uid", history_size=4, model="meta-llama/Meta-Llama-3.1-405B-Instruct")
+        chat_flow = await chat_prepare(uid=uid, history_size=10, model=model)
         orchestretor_json = {
-                "session_id": "test_sesstion_id_2",
+                "session_id": session_id,
                 "context_json": {
                     "message": message
                 }

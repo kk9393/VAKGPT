@@ -15,8 +15,8 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_DBNAME = "chat_history"
 DEFAULT_COLLECTION_NAME = "message_store"
-DEFAULT_SESSION_ID_KEY = "SessionId"
-DEFAULT_HISTORY_KEY = "History"
+DEFAULT_SESSION_ID_KEY = "session_id"
+DEFAULT_HISTORY_KEY = "history"
 
 class MongoDBChatMessageHistory(BaseChatMessageHistory):
     """Chat message history that stores history in MongoDB.

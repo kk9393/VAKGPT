@@ -136,7 +136,7 @@ export function ChatInterface({}) {
     setUserScrolledUp(false);
     try {
       const response = await fetch(
-        `http://localhost:8000/api/chat?message=${encodeURIComponent(message)}`
+        `http://localhost:8000/api/chat?message=${encodeURIComponent(message)}&session_id=testtessttest&uid=tesstuid&model=meta-llama/Meta-Llama-3.1-405B-Instruct`
       );
       if (!response.ok) {
         const errorBody = await response.json();
