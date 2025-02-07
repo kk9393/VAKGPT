@@ -10,7 +10,7 @@ A FastAPI backend using LangChain for AI-powered chat streaming.
 
 1. **Install dependencies**
     ```sh
-    poetry install
+    poetry install --no-root
     ```
 2. **Set up environment variables**
     Create a .env file and add:
