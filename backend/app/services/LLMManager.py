@@ -6,7 +6,7 @@ class LLMManager():
       self,
       # provider: str,
       model: str,
-      max_tokens: int = None,
+      max_tokens: int = 0,
       temperature: float = 0.7,
       top_p: float = 1,
       n: int = 1,
@@ -51,17 +51,11 @@ class LLMManager():
       )
 
   def get(self):
-    if self.model == "meta-llama/Llama-3.2-11B-Vision-Instruct":
-        return self.get_chatdeepinfra()
-    elif self.model == "meta-llama/Llama-3.3-70B-Instruct":
+    if self.model == "meta-llama/Llama-3.3-70B-Instruct":
         return self.get_chatdeepinfra()
     elif self.model == "meta-llama/Llama-3.2-90B-Vision-Instruct":
         return self.get_chatdeepinfra()
     elif self.model == "meta-llama/Meta-Llama-3.1-405B-Instruct":
-        return self.get_chatdeepinfra()
-    elif self.model == "Qwen/QwQ-32B-Preview":
-        return self.get_chatdeepinfra()
-    elif self.model == "Qwen/QVQ-72B-Preview":
         return self.get_chatdeepinfra()
     else:
       raise Exception("Model not supported")
