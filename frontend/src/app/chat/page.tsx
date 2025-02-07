@@ -1,21 +1,37 @@
 "use client";
 
-import { AppSidebar } from "@/components/app-sidebar"
-import { Separator } from "@/components/ui/separator"
+import { AppSidebar } from "@/components/app-sidebar";
+import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
-} from "@/components/ui/sidebar"
-import ChatInterface from "./ChatInterface";
+} from "@/components/ui/sidebar";
+import Cookies from "js-cookie";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import ChatInterface from "./ChatInterface";
 
 export default function Page() {
   const { setTheme } = useTheme();
+  const { login } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     setTheme("light")
   })
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+
+    if (token) {
+      Cookies.set("token", token, { expires: 7 });
+      login(token);
+      router.replace("/chat");
+    }
+  }, []);
 
   return (
     <SidebarProvider>
