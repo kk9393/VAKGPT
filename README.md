@@ -39,7 +39,9 @@ npm run dev
     - **Set up environment variables**
         Create a .env file and add:
         ``` sh
-        OPENAI_API_KEY=your_openai_api_key_here
+        DEEPINFRA_API_TOKEN=your_deepinfra_api_key
+        MONGODB_CONNECTION_STRING=your_mongodb_connection_string
+        CHAT_HISTORY_DATABASE_NAME=your_mongodb_history_db_name
         ```
     - **Run the server**
         ```sh
