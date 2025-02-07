@@ -132,7 +132,7 @@
 }
 
 .VAKChatBaseStyleDark strong {
-  @apply text-gray-100 font-bold text-base !important;
+  @apply text-gray-100 font-bold !important;
 }
 
 .VAKChatBaseStyleDark em {
@@ -316,7 +316,7 @@
 }
 
 .VAKChatBaseStyleLight strong {
-  @apply text-gray-900 font-bold text-base !important;
+  @apply text-gray-900 font-bold !important;
 }
 
 .VAKChatBaseStyleLight em {
