@@ -48,9 +48,8 @@ async def callback(provider: str, code: str):
     existing_user = await users_collection.find_one({"email": email})
 
     if existing_user:
-        user_id = existing_user["userid"]  # ✅ Use existing user ID
+        user_id = existing_user["userid"]
     else:
-        # ✅ Create new user entry directly in callback
         user_id = generate_userid()
         new_user = {
             "userid": user_id,
@@ -59,7 +58,7 @@ async def callback(provider: str, code: str):
             "profile_picture": user_info.get("avatar_url"),
             "provider": provider,
         }
-        await users_collection.insert_one(new_user)  # ✅ Save new user to DB
+        await users_collection.insert_one(new_user)
 
     # Generate JWT token
     payload = {
