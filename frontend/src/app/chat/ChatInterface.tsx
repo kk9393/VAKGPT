@@ -347,15 +347,16 @@ export function ChatInterface({}) {
                 rowGap: "16px",
                 maxWidth: "768px",
               }}
-            >
-              <h3 className="text-justify px-4">What can I help you with?</h3>
-            </div>
+            ></div>
           )}
         </div>
         {/* Chat Body End */}
 
         {/* Input Section Start */}
         <div className={`${chatStarted ? "" : "mb-40"}`}>
+          {!chatStarted && (
+            <h2 className="text-center px-4">What can I help with?</h2>
+          )}
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -470,9 +471,13 @@ const InputContainer: React.FC<InputContainerProps> = ({
 const Footer: React.FC<FooterProps> = ({ footerRef }) => {
   return (
     <div
-      className="bg-white dark:bg-black font-sans flex relative text-sm text-gray-500 items-center justify-center rounded-none pt-2 pb-2"
+      className="flex relative items-center justify-center rounded-none pt-2 pb-2"
       ref={footerRef}
-    ></div>
+    >
+      <span className="text-xs text-gray-500">
+        VAKGPT can make mistakes. Check important info.
+      </span>
+    </div>
   );
 };
 
