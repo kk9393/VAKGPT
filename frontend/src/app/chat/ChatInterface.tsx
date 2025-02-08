@@ -381,9 +381,9 @@ export function ChatInterface({}) {
               />
             </div>
           </form>
-          <Footer footerRef={footerRef} />
         </div>
         {/* Input Section End */}
+        <Footer footerRef={footerRef} />
       </div>
     </div>
   );
