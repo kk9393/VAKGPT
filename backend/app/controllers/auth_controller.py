@@ -5,11 +5,11 @@ import string
 from fastapi.responses import RedirectResponse, JSONResponse
 from app.models.user_model import User
 from app.config.settings import settings
+from app.config.database import users_collection
 from app.services.auth_service import (
     get_oauth_provider_url,
     exchange_code_for_token,
     fetch_user_info,
-    save_user
 )
 
 def generate_userid():
@@ -44,17 +44,24 @@ async def callback(provider: str, code: str):
     email = user_info.get("email")
     name = user_info.get("name", "Unknown")
 
-    user_id = generate_userid()
-    user = User(
-        userid=user_id,
-        name=user_info.get("name", "Unknown"),
-        email=email,  # Now guaranteed to be present
-        profile_picture=user_info.get("avatar_url"),
-        provider=provider,
-    )
+    # Check if user already exists in DB
+    existing_user = await users_collection.find_one({"email": email})
 
-    await save_user(user.dict())
+    if existing_user:
+        user_id = existing_user["userid"]  # ✅ Use existing user ID
+    else:
+        # ✅ Create new user entry directly in callback
+        user_id = generate_userid()
+        new_user = {
+            "userid": user_id,
+            "name": name,
+            "email": email,
+            "profile_picture": user_info.get("avatar_url"),
+            "provider": provider,
+        }
+        await users_collection.insert_one(new_user)  # ✅ Save new user to DB
 
+    # Generate JWT token
     payload = {
         "userid": user_id,
         "name": name,

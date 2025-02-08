@@ -13,11 +13,10 @@ import { loginWithGoogle } from "@/lib/auth";
 import { Clock } from "lucide-react";
 import { NavUser } from "./nav-user";
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
-interface Session {
-  session_id: string;
-  _id: string;
-}
+type Session = string;
+
 
 export function AppSidebar({
   setSelectedSession,
@@ -30,11 +29,30 @@ export function AppSidebar({
   useEffect(() => {
     const fetchSessions = async () => {
       try {
+        const token = Cookies.get("token");
+
+        const headers: HeadersInit = {
+          "Content-Type": "application/json",
+        };
+
+        if (token) {
+          headers.Authorization = `Bearer ${token}`;
+        }
+
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/sessions`
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/session/get_sessions`,
+          {
+            method: "GET",
+            headers,
+          }
         );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch sessions");
+        }
+
         const data = await response.json();
-        setSessions(data);
+        setSessions(data?.sessions || []);
       } catch (error) {
         console.error("Error fetching sessions:", error);
       }
@@ -50,13 +68,12 @@ export function AppSidebar({
           items={[
             {
               title: "Sessions",
-              url: "#",
               icon: Clock,
               isActive: true,
-              items: sessions.map((session) => ({
-                title: session.session_id,
-                url: "#",
-                onClick: () => setSelectedSession(session.session_id),
+              items: sessions.map((session: string) => ({
+                title: session, 
+                key: session, 
+                onClick: () => setSelectedSession(session),
               })),
             },
           ]}

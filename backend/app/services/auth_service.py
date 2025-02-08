@@ -47,10 +47,3 @@ async def fetch_user_info(provider: str, access_token: str):
     print("🟢 User data from Google OAuth:", user_info)
 
     return user_info
-
-async def save_user(user_data: dict):
-    """Saves user data to MongoDB"""
-    existing_user = await users_collection.find_one({"email": user_data["email"]})
-    if not existing_user:
-        await users_collection.insert_one(user_data)
-

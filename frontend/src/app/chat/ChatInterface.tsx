@@ -14,6 +14,11 @@ interface Message {
   sender: "user" | "bot";
 }
 
+// Props for `ChatInterface`
+interface ChatInterfaceProps {
+  selectedSession: string | null;
+}
+
 // Props for the InputContainer component
 interface InputContainerProps {
   rowSize: number;
@@ -35,7 +40,7 @@ interface FooterProps {
   footerRef: RefObject<HTMLDivElement | null>;
 }
 
-export function ChatInterface({}) {
+export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
   const [chatStarted, setChatStarted] = useState<boolean>(false);
   const [userMessage, setUserMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
@@ -53,6 +58,29 @@ export function ChatInterface({}) {
   const PopupBodyRef = useRef(null);
   const sendBtnRef = useRef<HTMLButtonElement>(null);
   const ongoingMessageIdRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!selectedSession) return;
+
+    const fetchMessages = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/chat-history?session_id=${selectedSession}`
+        );
+        const data = await response.json();
+        const formattedMessages = data.map((msg: any) => ({
+          id: msg._id,
+          message: JSON.parse(msg.history).data.content, // Parsing stored JSON
+          sender: "user", // Assuming stored messages are user messages
+        }));
+        setMessages(formattedMessages);
+      } catch (error) {
+        console.error("Error fetching chat history:", error);
+      }
+    };
+
+    fetchMessages();
+  }, [selectedSession]);
 
   // Prevent scrolling inside chat reference
   const handleChatRefScroll = (e: React.UIEvent<HTMLDivElement>) => {
