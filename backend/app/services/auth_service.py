@@ -44,6 +44,4 @@ async def fetch_user_info(provider: str, access_token: str):
     response = requests.get(url, headers=headers)
     user_info = response.json()
 
-    print("🟢 User data from Google OAuth:", user_info)
-
     return user_info

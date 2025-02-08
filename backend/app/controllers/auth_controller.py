@@ -14,8 +14,8 @@ from app.services.auth_service import (
 
 def generate_userid():
     """Generate a random 28-character user ID"""
-    characters = string.ascii_letters + string.digits  # A-Z, a-z, 0-9
-    return ''.join(secrets.choice(characters) for _ in range(28))  # 28 characters
+    characters = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(characters) for _ in range(28))
 
 async def login(provider: str):
     """Redirect user to OAuth provider"""
@@ -44,7 +44,6 @@ async def callback(provider: str, code: str):
     email = user_info.get("email")
     name = user_info.get("name", "Unknown")
 
-    # Check if user already exists in DB
     existing_user = await users_collection.find_one({"email": email})
 
     if existing_user:
@@ -60,12 +59,11 @@ async def callback(provider: str, code: str):
         }
         await users_collection.insert_one(new_user)
 
-    # Generate JWT token
     payload = {
         "userid": user_id,
         "name": name,
         "email": email,
-        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=7)  # Expires in 7 days
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=7)
     }
     jwt_token = pyjwt.encode(payload, settings.JWT_SECRET_KEY, algorithm="HS256")
 
