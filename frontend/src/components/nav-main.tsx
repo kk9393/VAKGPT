@@ -1,7 +1,4 @@
-"use client";
-
 import { ChevronRight, Edit, type LucideIcon } from "lucide-react";
-
 import {
   Collapsible,
   CollapsibleContent,
@@ -16,9 +13,11 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { useAuth } from "@/app/context/AuthContext";
 
 export function NavMain({
   items,
+  createNewSession, // ✅ Receive function as prop
 }: {
   items: {
     title: string;
@@ -26,15 +25,27 @@ export function NavMain({
     isActive?: boolean;
     items?: {
       title: string;
-      key: string; // ✅ Ensure key is explicitly typed as a string
-      onClick: () => void; // ✅ Add onClick event type
+      key: string;
+      onClick: () => void;
+      isSelected?: boolean; // ✅ Track selected state
     }[];
   }[];
+  createNewSession: () => void;
 }) {
+  const { user } = useAuth();
+
+  const handleNewChat = () => {
+    if (user) {
+      createNewSession(); // ✅ Create a new session
+    } else {
+      // open login modal
+    }
+  };
+
   return (
     <SidebarGroup>
       <SidebarMenu>
-        <SidebarMenuItem className="pb-4">
+        <SidebarMenuItem className="pb-4" onClick={handleNewChat}>
           <SidebarMenuButton
             className="rounded bg-secondary h-full"
             tooltip={"New Chat"}
@@ -62,7 +73,14 @@ export function NavMain({
               <CollapsibleContent>
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.key}>
+                    <SidebarMenuSubItem
+                      key={subItem.key}
+                      className={`cursor-pointer ${
+                        subItem.isSelected
+                          ? "bg-gray-200 dark:bg-gray-700" // ✅ Highlight selected session
+                          : ""
+                      }`}
+                    >
                       <SidebarMenuSubButton asChild>
                         <span onClick={subItem.onClick}>
                           <span>{subItem.title}</span>

@@ -4,6 +4,7 @@ import { RefObject, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ArrowUp, Globe, Paperclip } from "lucide-react";
 import { marked } from "marked";
+import Cookies from "js-cookie";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import styles from "./index.module.css";
 
@@ -41,7 +42,7 @@ interface FooterProps {
 }
 
 export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
-  const [chatStarted, setChatStarted] = useState<boolean>(false);
+  const [chatStarted, setChatStarted] = useState<boolean>(true);
   const [userMessage, setUserMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isResponseAwaiting, setisResponseAwaiting] = useState(false);
@@ -50,6 +51,9 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
   const [isResponseStreaming, setisResponseStreaming] = useState(false);
   const [userScrolledUp, setUserScrolledUp] = useState(false);
   const [isWebSearchActive, setIsWebSearchActive] = useState(true);
+  const [page, setPage] = useState(1);
+  const [hasMoreMessages, setHasMoreMessages] = useState(true);
+  const [loadingMessages, setLoadingMessages] = useState(false);
 
   // Refs for managing chat input and scrolling
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
@@ -58,29 +62,79 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
   const PopupBodyRef = useRef(null);
   const sendBtnRef = useRef<HTMLButtonElement>(null);
   const ongoingMessageIdRef = useRef<string | null>(null);
-
   useEffect(() => {
     if (!selectedSession) return;
 
-    const fetchMessages = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/chat-history?session_id=${selectedSession}`
-        );
-        const data = await response.json();
-        const formattedMessages = data.map((msg: any) => ({
-          id: msg._id,
-          message: JSON.parse(msg.history).data.content, // Parsing stored JSON
-          sender: "user", // Assuming stored messages are user messages
-        }));
-        setMessages(formattedMessages);
-      } catch (error) {
-        console.error("Error fetching chat history:", error);
-      }
-    };
-
-    fetchMessages();
+    // Clear messages and reset page when session changes
+    setMessages([]);
+    setPage(1);
+    fetchMessages(1);
+    HardScrollToCurrentMessage();
   }, [selectedSession]);
+
+  useEffect(() => {
+    if (page > 1) {
+      fetchMessages(page);
+    }
+  }, [page]);
+
+  const fetchMessages = async (currentPage: number) => {
+    try {
+      setLoadingMessages(true);
+      const token = Cookies.get("token");
+
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+      };
+
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/session/get_session_chat?session_id=${selectedSession}&page=${currentPage}`,
+        { method: "GET", headers }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch chat history");
+      }
+
+      const data = await response.json();
+
+      if (data?.messages.length === 0) {
+        setHasMoreMessages(false);
+        return;
+      }
+
+      const formattedMessages = data.messages.reverse().map( (msg: any) => ({
+        id: msg.id,
+        message: msg.sender === "ai" ? marked.parse(msg.message) : msg.message,
+        timestamp: msg.timestamp,
+        sender: msg.sender === "ai" ? "bot" : "user",
+      }));
+
+      if (currentPage === 1) {
+        // New session: reset messages
+        setMessages(formattedMessages);
+      } else {
+        // Pagination: prepend older messages to existing ones
+        setMessages((prevMessages) => [...formattedMessages, ...prevMessages]);
+      }
+
+      setHasMoreMessages(data.pagination.has_next_page);
+    } catch (error) {
+      console.error("Error fetching chat history:", error);
+    } finally {
+      setLoadingMessages(false);
+    }
+  };
+
+  const loadMoreMessages = () => {
+    if (hasMoreMessages && !loadingMessages) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
 
   // Prevent scrolling inside chat reference
   const handleChatRefScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -165,12 +219,23 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
     setisResponseAwaiting(true);
     setUserScrolledUp(false);
     try {
+      const token = Cookies.get("token");
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+      };
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
       const response = await fetch(
         `${
           process.env.NEXT_PUBLIC_API_BASE_URL
         }/api/chat?message=${encodeURIComponent(
           message
-        )}&session_id=test_session&uid=test_uid&model=deepseek-chat`
+        )}&session_id=${selectedSession}&model=deepseek-chat`,
+        {
+          method: "GET",
+          headers,
+        }
       );
       if (!response.ok) {
         const errorBody = await response.json();
@@ -248,13 +313,20 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
 
   // Function to detect if user has scrolled up
   const handleScroll = () => {
-    if (chatBodyRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = chatBodyRef.current;
-      if (scrollTop + clientHeight + 15 < scrollHeight) {
-        setUserScrolledUp(true);
-      } else {
-        setUserScrolledUp(false);
-      }
+    if (!chatBodyRef.current) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = chatBodyRef.current;
+
+    // Detect user scrolling
+    if (scrollTop + clientHeight + 15 < scrollHeight) {
+      setUserScrolledUp(true);
+    } else {
+      setUserScrolledUp(false);
+    }
+
+    // If scrolled to the top, load more messages
+    if (scrollTop === 0) {
+      loadMoreMessages();
     }
   };
 

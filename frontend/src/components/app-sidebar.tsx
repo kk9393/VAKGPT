@@ -1,5 +1,3 @@
-"use client";
-
 import { useAuth } from "@/app/context/AuthContext";
 import { NavMain } from "@/components/nav-main";
 import { Button } from "@/components/ui/button";
@@ -17,11 +15,12 @@ import Cookies from "js-cookie";
 
 type Session = string;
 
-
 export function AppSidebar({
   setSelectedSession,
+  selectedSession, // ✅ Pass selected session as prop
 }: {
   setSelectedSession: (sessionId: string) => void;
+  selectedSession: string | null; // ✅ Track currently selected session
 }) {
   const { user, logout } = useAuth();
   const [sessions, setSessions] = useState<Session[]>([]);
@@ -52,7 +51,18 @@ export function AppSidebar({
         }
 
         const data = await response.json();
-        setSessions(data?.sessions || []);
+        const fetchedSessions = data?.sessions || [];
+
+        setSessions(fetchedSessions);
+
+        // ✅ Auto-select the first session if available
+        if (fetchedSessions.length > 0 && !selectedSession) {
+          setSelectedSession(fetchedSessions[0]);
+        }
+
+        if(fetchedSessions.length == 0){
+          createNewSession()
+        }
       } catch (error) {
         console.error("Error fetching sessions:", error);
       }
@@ -60,6 +70,20 @@ export function AppSidebar({
 
     fetchSessions();
   }, []);
+
+  const createNewSession = () => {
+    const generateRandomString = (length: number) => {
+      const chars =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      return Array.from({ length }, () =>
+        chars.charAt(Math.floor(Math.random() * chars.length))
+      ).join("");
+    };
+
+    const newSessionId = generateRandomString(20);
+    setSessions((prev) => [newSessionId, ...prev]); // ✅ Add new session to the list
+    setSelectedSession(newSessionId); // ✅ Set as the selected session
+  };
 
   return (
     <Sidebar collapsible="icon">
@@ -71,12 +95,14 @@ export function AppSidebar({
               icon: Clock,
               isActive: true,
               items: sessions.map((session: string) => ({
-                title: session, 
-                key: session, 
+                title: session,
+                key: session,
                 onClick: () => setSelectedSession(session),
+                isSelected: selectedSession === session, // ✅ Pass selected state
               })),
             },
           ]}
+          createNewSession={createNewSession} // ✅ Pass function to NavMain
         />
       </SidebarContent>
       <SidebarFooter>
