@@ -1,100 +1,77 @@
 "use client";
 
-import { Clock, LogOut, ChevronsUpDown } from "lucide-react";
-import { Sidebar, SidebarContent, SidebarRail, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
+import { useAuth } from "@/app/context/AuthContext";
 import { NavMain } from "@/components/nav-main";
 import { Button } from "@/components/ui/button";
-import { loginWithGoogle } from "@/lib/auth";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useAuth } from "@/app/context/AuthContext";
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarRail,
+} from "@/components/ui/sidebar";
+import { loginWithGoogle } from "@/lib/auth";
+import { Clock } from "lucide-react";
+import { NavUser } from "./nav-user";
+import { useEffect, useState } from "react";
 
-// Sample Data
-const data = {
-  navMain: [
-    {
-      title: "Sessions",
-      url: "#",
-      icon: Clock,
-      isActive: true,
-      items: [
-        {
-          title: "123",
-          url: "#",
-        },
-        {
-          title: "456",
-          url: "#",
-        },
-      ],
-    },
-  ],
-};
+interface Session {
+  session_id: string;
+  _id: string;
+}
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  setSelectedSession,
+}: {
+  setSelectedSession: (sessionId: string) => void;
+}) {
   const { user, logout } = useAuth();
+  const [sessions, setSessions] = useState<Session[]>([]);
+
+  useEffect(() => {
+    const fetchSessions = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/sessions`
+        );
+        const data = await response.json();
+        setSessions(data);
+      } catch (error) {
+        console.error("Error fetching sessions:", error);
+      }
+    };
+
+    fetchSessions();
+  }, []);
 
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon">
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain
+          items={[
+            {
+              title: "Sessions",
+              url: "#",
+              icon: Clock,
+              isActive: true,
+              items: sessions.map((session) => ({
+                title: session.session_id,
+                url: "#",
+                onClick: () => setSelectedSession(session.session_id),
+              })),
+            },
+          ]}
+        />
       </SidebarContent>
-      <SidebarRail />
-
-      {/* Login or User Info at Bottom */}
-      <div className="absolute bottom-4 left-0 w-full px-4">
+      <SidebarFooter>
         {!user ? (
           <Button onClick={loginWithGoogle} className="w-full">
             Login
           </Button>
         ) : (
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton className="w-full flex items-center gap-2">
-                    <Avatar className="h-8 w-8 rounded-lg">
-                      <AvatarImage src={user.profile_picture || ""} alt={user.name} />
-                      <AvatarFallback className="rounded-lg">{user.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <span className="truncate">{user.email}</span>
-                    <ChevronsUpDown className="ml-auto size-4" />
-                  </SidebarMenuButton>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg" side="right" align="end">
-                  <DropdownMenuLabel className="p-0 font-normal">
-                    <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                      <Avatar className="h-8 w-8 rounded-lg">
-                        <AvatarImage src={user.profile_picture || ""} alt={user.name} />
-                        <AvatarFallback className="rounded-lg">{user.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div className="grid flex-1 text-left text-sm leading-tight">
-                        <span className="truncate font-semibold">{user.name}</span>
-                        <span className="truncate text-xs">{user.email}</span>
-                      </div>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem onClick={logout} className="text-red-500 hover:text-red-700">
-                      <LogOut />
-                      Logout
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </SidebarMenuItem>
-          </SidebarMenu>
+          <NavUser user={user} logout={logout} />
         )}
-      </div>
+      </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   );
 }
