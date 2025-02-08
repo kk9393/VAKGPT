@@ -6,12 +6,11 @@ async def get_sessions(user: dict):
     """
     Fetches the list of unique chat sessions for a user, sorted by the latest timestamp.
     """
-    userid = user["userid"]  # Extract user ID
+    userid = user["userid"]
     db = client.VAKGPTChatHistory
-    collection = db[userid]  # Collection name = userid
+    collection = db[userid]
 
     try:
-        # Aggregate to get the latest timestamp for each session and sort by latest timestamp
         pipeline = [
             {"$group": {"_id": "$session_id", "latest_timestamp": {"$max": "$timestamp"}}},
             {"$sort": {"latest_timestamp": -1}}
@@ -19,7 +18,6 @@ async def get_sessions(user: dict):
 
         result = await collection.aggregate(pipeline).to_list(None)
 
-        # Extract sorted session IDs
         sessions = [doc["_id"] for doc in result]
 
         return {"sessions": sessions}
@@ -31,19 +29,17 @@ async def get_sessions(user: dict):
 async def get_session_chat(session_id: str, page: int, user: dict):
     """Fetch session chat history for the given session ID with pagination"""
     
-    userid = user["userid"]  # Extract user ID
+    userid = user["userid"] 
     db = client.VAKGPTChatHistory
-    chat_collection = db[userid]  # Collection name = userid
+    chat_collection = db[userid] 
 
     messages_per_page = 10
     skip_count = (page - 1) * messages_per_page 
 
-    # Fetch chat messages with pagination
     chat_history = await chat_collection.find(
         {"session_id": session_id}
     ).sort("timestamp", -1).skip(skip_count).limit(messages_per_page).to_list(None)
 
-    # If no chat history found, use an empty list
     if not chat_history:
         chat_history = []
 
@@ -57,10 +53,8 @@ async def get_session_chat(session_id: str, page: int, user: dict):
         for msg in chat_history
     ]
 
-    # Count total messages in the session
     total_messages = await chat_collection.count_documents({"session_id": session_id})
     
-    # Calculate if there's a next page
     has_next_page = skip_count + messages_per_page < total_messages
 
     return {
