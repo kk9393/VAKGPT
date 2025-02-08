@@ -17,7 +17,7 @@ import { useAuth } from "@/app/context/AuthContext";
 
 export function NavMain({
   items,
-  createNewSession, // ✅ Receive function as prop
+  createNewSession,
 }: {
   items: {
     title: string;
@@ -27,7 +27,7 @@ export function NavMain({
       title: string;
       key: string;
       onClick: () => void;
-      isSelected?: boolean; // ✅ Track selected state
+      isSelected?: boolean;
     }[];
   }[];
   createNewSession: () => void;
@@ -36,7 +36,7 @@ export function NavMain({
 
   const handleNewChat = () => {
     if (user) {
-      createNewSession(); // ✅ Create a new session
+      createNewSession();
     } else {
       // open login modal
     }
@@ -77,7 +77,7 @@ export function NavMain({
                       key={subItem.key}
                       className={`cursor-pointer ${
                         subItem.isSelected
-                          ? "bg-gray-200 dark:bg-gray-700" // ✅ Highlight selected session
+                          ? "bg-gray-200 dark:bg-gray-700"
                           : ""
                       }`}
                     >

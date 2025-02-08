@@ -17,10 +17,10 @@ type Session = string;
 
 export function AppSidebar({
   setSelectedSession,
-  selectedSession, // ✅ Pass selected session as prop
+  selectedSession,
 }: {
   setSelectedSession: (sessionId: string) => void;
-  selectedSession: string | null; // ✅ Track currently selected session
+  selectedSession: string | null;
 }) {
   const { user, logout } = useAuth();
   const [sessions, setSessions] = useState<Session[]>([]);
@@ -55,7 +55,6 @@ export function AppSidebar({
 
         setSessions(fetchedSessions);
 
-        // ✅ Auto-select the first session if available
         if (fetchedSessions.length > 0 && !selectedSession) {
           setSelectedSession(fetchedSessions[0]);
         }
@@ -81,8 +80,8 @@ export function AppSidebar({
     };
 
     const newSessionId = generateRandomString(20);
-    setSessions((prev) => [newSessionId, ...prev]); // ✅ Add new session to the list
-    setSelectedSession(newSessionId); // ✅ Set as the selected session
+    setSessions((prev) => [newSessionId, ...prev]); 
+    setSelectedSession(newSessionId);
   };
 
   return (
@@ -98,11 +97,11 @@ export function AppSidebar({
                 title: session,
                 key: session,
                 onClick: () => setSelectedSession(session),
-                isSelected: selectedSession === session, // ✅ Pass selected state
+                isSelected: selectedSession === session, 
               })),
             },
           ]}
-          createNewSession={createNewSession} // ✅ Pass function to NavMain
+          createNewSession={createNewSession}
         />
       </SidebarContent>
       <SidebarFooter>
