@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import hello_route, auth_route, chat_route, protected_route
+from app.routes import hello_route, auth_route, chat_route, protected_route, session_route
 
 app = FastAPI()
 
@@ -17,6 +17,7 @@ app.include_router(hello_route.router, prefix="/api")
 app.include_router(protected_route.router, prefix="/api")
 app.include_router(auth_route.router, prefix="/api")
 app.include_router(chat_route.router, prefix="/api")
+app.include_router(session_route.router, prefix="/api")
 
 if __name__ == "__main__":
     import uvicorn

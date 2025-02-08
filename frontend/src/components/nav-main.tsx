@@ -1,12 +1,9 @@
-"use client"
-
-import { ChevronRight, Edit, type LucideIcon } from "lucide-react"
-
+import { ChevronRight, Edit, type LucideIcon } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+} from "@/components/ui/collapsible";
 import {
   SidebarGroup,
   SidebarMenu,
@@ -15,27 +12,40 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import { useAuth } from "@/app/context/AuthContext";
 
 export function NavMain({
   items,
+  createNewSession,
 }: {
   items: {
-    title: string
-    url: string
-    icon?: LucideIcon
-    isActive?: boolean
+    title: string;
+    icon?: LucideIcon;
+    isActive?: boolean;
     items?: {
-      title: string
-      url: string
-    }[]
-  }[]
+      title: string;
+      key: string;
+      onClick: () => void;
+      isSelected?: boolean;
+    }[];
+  }[];
+  createNewSession: () => void;
 }) {
+  const { user } = useAuth();
+
+  const handleNewChat = () => {
+    if (user) {
+      createNewSession();
+    } else {
+      // open login modal
+    }
+  };
+
   return (
     <SidebarGroup>
       <SidebarMenu>
-
-        <SidebarMenuItem className="pb-4">
+        <SidebarMenuItem className="pb-4" onClick={handleNewChat}>
           <SidebarMenuButton
             className="rounded bg-secondary h-full"
             tooltip={"New Chat"}
@@ -63,11 +73,18 @@ export function NavMain({
               <CollapsibleContent>
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.title}>
+                    <SidebarMenuSubItem
+                      key={subItem.key}
+                      className={`cursor-pointer ${
+                        subItem.isSelected
+                          ? "bg-gray-200 dark:bg-gray-700"
+                          : ""
+                      }`}
+                    >
                       <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
+                        <span onClick={subItem.onClick}>
                           <span>{subItem.title}</span>
-                        </a>
+                        </span>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}
@@ -78,5 +95,5 @@ export function NavMain({
         ))}
       </SidebarMenu>
     </SidebarGroup>
-  )
+  );
 }

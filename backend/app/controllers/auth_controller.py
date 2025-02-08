@@ -5,17 +5,17 @@ import string
 from fastapi.responses import RedirectResponse, JSONResponse
 from app.models.user_model import User
 from app.config.settings import settings
+from app.config.database import users_collection
 from app.services.auth_service import (
     get_oauth_provider_url,
     exchange_code_for_token,
     fetch_user_info,
-    save_user
 )
 
 def generate_userid():
     """Generate a random 28-character user ID"""
-    characters = string.ascii_letters + string.digits  # A-Z, a-z, 0-9
-    return ''.join(secrets.choice(characters) for _ in range(28))  # 28 characters
+    characters = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(characters) for _ in range(28))
 
 async def login(provider: str):
     """Redirect user to OAuth provider"""
@@ -44,22 +44,26 @@ async def callback(provider: str, code: str):
     email = user_info.get("email")
     name = user_info.get("name", "Unknown")
 
-    user_id = generate_userid()
-    user = User(
-        userid=user_id,
-        name=user_info.get("name", "Unknown"),
-        email=email,  # Now guaranteed to be present
-        profile_picture=user_info.get("avatar_url"),
-        provider=provider,
-    )
+    existing_user = await users_collection.find_one({"email": email})
 
-    await save_user(user.dict())
+    if existing_user:
+        user_id = existing_user["userid"]
+    else:
+        user_id = generate_userid()
+        new_user = {
+            "userid": user_id,
+            "name": name,
+            "email": email,
+            "profile_picture": user_info.get("avatar_url"),
+            "provider": provider,
+        }
+        await users_collection.insert_one(new_user)
 
     payload = {
         "userid": user_id,
         "name": name,
         "email": email,
-        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=7)  # Expires in 7 days
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=7)
     }
     jwt_token = pyjwt.encode(payload, settings.JWT_SECRET_KEY, algorithm="HS256")
 

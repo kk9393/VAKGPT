@@ -1,100 +1,119 @@
-"use client";
-
-import { Clock, LogOut, ChevronsUpDown } from "lucide-react";
-import { Sidebar, SidebarContent, SidebarRail, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
+import { useAuth } from "@/app/context/AuthContext";
 import { NavMain } from "@/components/nav-main";
 import { Button } from "@/components/ui/button";
-import { loginWithGoogle } from "@/lib/auth";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useAuth } from "@/app/context/AuthContext";
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarRail,
+} from "@/components/ui/sidebar";
+import { loginWithGoogle } from "@/lib/auth";
+import { Clock } from "lucide-react";
+import { NavUser } from "./nav-user";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
-// Sample Data
-const data = {
-  navMain: [
-    {
-      title: "Sessions",
-      url: "#",
-      icon: Clock,
-      isActive: true,
-      items: [
-        {
-          title: "123",
-          url: "#",
-        },
-        {
-          title: "456",
-          url: "#",
-        },
-      ],
-    },
-  ],
-};
+type Session = string;
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  setSelectedSession,
+  selectedSession,
+}: {
+  setSelectedSession: (sessionId: string) => void;
+  selectedSession: string | null;
+}) {
   const { user, logout } = useAuth();
+  const [sessions, setSessions] = useState<Session[]>([]);
+
+  useEffect(() => {
+    const fetchSessions = async () => {
+      try {
+        const token = Cookies.get("token");
+
+        const headers: HeadersInit = {
+          "Content-Type": "application/json",
+        };
+
+        if (token) {
+          headers.Authorization = `Bearer ${token}`;
+        }
+
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/session/get_sessions`,
+          {
+            method: "GET",
+            headers,
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch sessions");
+        }
+
+        const data = await response.json();
+        const fetchedSessions = data?.sessions || [];
+
+        setSessions(fetchedSessions);
+
+        if (fetchedSessions.length > 0 && !selectedSession) {
+          setSelectedSession(fetchedSessions[0]);
+        }
+
+        if(fetchedSessions.length == 0){
+          createNewSession()
+        }
+      } catch (error) {
+        console.error("Error fetching sessions:", error);
+      }
+    };
+
+    fetchSessions();
+  }, []);
+
+  const createNewSession = () => {
+    const generateRandomString = (length: number) => {
+      const chars =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      return Array.from({ length }, () =>
+        chars.charAt(Math.floor(Math.random() * chars.length))
+      ).join("");
+    };
+
+    const newSessionId = generateRandomString(20);
+    setSessions((prev) => [newSessionId, ...prev]); 
+    setSelectedSession(newSessionId);
+  };
 
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon">
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain
+          items={[
+            {
+              title: "Sessions",
+              icon: Clock,
+              isActive: true,
+              items: sessions.map((session: string) => ({
+                title: session,
+                key: session,
+                onClick: () => setSelectedSession(session),
+                isSelected: selectedSession === session, 
+              })),
+            },
+          ]}
+          createNewSession={createNewSession}
+        />
       </SidebarContent>
-      <SidebarRail />
-
-      {/* Login or User Info at Bottom */}
-      <div className="absolute bottom-4 left-0 w-full px-4">
+      <SidebarFooter>
         {!user ? (
           <Button onClick={loginWithGoogle} className="w-full">
             Login
           </Button>
         ) : (
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton className="w-full flex items-center gap-2">
-                    <Avatar className="h-8 w-8 rounded-lg">
-                      <AvatarImage src={user.profile_picture || ""} alt={user.name} />
-                      <AvatarFallback className="rounded-lg">{user.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <span className="truncate">{user.email}</span>
-                    <ChevronsUpDown className="ml-auto size-4" />
-                  </SidebarMenuButton>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg" side="right" align="end">
-                  <DropdownMenuLabel className="p-0 font-normal">
-                    <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                      <Avatar className="h-8 w-8 rounded-lg">
-                        <AvatarImage src={user.profile_picture || ""} alt={user.name} />
-                        <AvatarFallback className="rounded-lg">{user.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div className="grid flex-1 text-left text-sm leading-tight">
-                        <span className="truncate font-semibold">{user.name}</span>
-                        <span className="truncate text-xs">{user.email}</span>
-                      </div>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem onClick={logout} className="text-red-500 hover:text-red-700">
-                      <LogOut />
-                      Logout
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </SidebarMenuItem>
-          </SidebarMenu>
+          <NavUser user={user} logout={logout} />
         )}
-      </div>
+      </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   );
 }
