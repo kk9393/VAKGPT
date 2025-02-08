@@ -104,9 +104,13 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
 
       if (data?.messages.length === 0) {
         setHasMoreMessages(false);
+        if(currentPage === 1){
+          setChatStarted(false)
+        }
         return;
       }
-
+      
+      setChatStarted(true)
       const formattedMessages = data.messages.reverse().map( (msg: any) => ({
         id: msg.id,
         message: msg.sender === "ai" ? marked.parse(msg.message) : msg.message,
@@ -115,10 +119,8 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
       }));
 
       if (currentPage === 1) {
-        // New session: reset messages
         setMessages(formattedMessages);
       } else {
-        // Pagination: prepend older messages to existing ones
         setMessages((prevMessages) => [...formattedMessages, ...prevMessages]);
       }
 
