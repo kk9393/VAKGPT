@@ -1,5 +1,6 @@
 import os
 from langchain_community.chat_models import ChatDeepInfra
+from langchain_deepseek import ChatDeepSeek
 
 class LLMManager():
   def __init__(
@@ -49,6 +50,23 @@ class LLMManager():
         # stream_usage=self.stream_usage,
         streaming=True
       )
+  
+  def get_chatdeepseek(self):
+    return ChatDeepSeek(
+        model_name=self.model,
+        api_key=os.getenv("DEEPSEEK_API_KEY"),
+        # max_tokens=self.max_tokens,
+        temperature=self.temperature,
+        top_p=self.top_p,
+        n=self.n,
+        # stop=self.stop,
+        # presence_penalty=self.presence_penalty,
+        # frequency_penalty=self.frequency_penalty,
+        # logit_bias=self.logit_bias,
+        # logprobs=self.logprobs,
+        # stream_usage=self.stream_usage,
+        streaming=True
+      )
 
   def get(self):
     if self.model == "meta-llama/Llama-3.3-70B-Instruct":
@@ -57,6 +75,8 @@ class LLMManager():
         return self.get_chatdeepinfra()
     elif self.model == "meta-llama/Meta-Llama-3.1-405B-Instruct":
         return self.get_chatdeepinfra()
+    elif self.model == "deepseek-chat":
+        return self.get_chatdeepseek()
     else:
       raise Exception("Model not supported")
 

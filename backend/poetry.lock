@@ -979,6 +979,22 @@ tenacity = ">=8.1.0,<8.4.0 || >8.4.0,<10.0.0"
 typing-extensions = ">=4.7"
 
 [[package]]
+name = "langchain-deepseek"
+version = "0.1.1"
+description = "An integration package connecting DeepSeek and LangChain"
+optional = false
+python-versions = "<4.0,>=3.9"
+groups = ["main"]
+files = [
+    {file = "langchain_deepseek-0.1.1-py3-none-any.whl", hash = "sha256:6443bbb0e0789bd9ec5120aef05a0e579fe35f385b58f26e6d35507a67b7d519"},
+    {file = "langchain_deepseek-0.1.1.tar.gz", hash = "sha256:51bfd441d35029451921d9aebc9e66609d7cbbf5c9012c50391f78e1d74b6e97"},
+]
+
+[package.dependencies]
+langchain-core = ">=0.3.33,<0.4.0"
+langchain-openai = ">=0.3.3,<0.4.0"
+
+[[package]]
 name = "langchain-mongodb"
 version = "0.4.0"
 description = "An integration package connecting MongoDB and LangChain"
@@ -2516,4 +2532,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9,<4.0"
-content-hash = "24d2599e798d75277e02f4931b339937f3a3de27232481ca394f44440f6aa7d1"
+content-hash = "332e2d892c4d1a00b516325c65dd7d767c5e80769b2591529f4c00c7e0941dcd"

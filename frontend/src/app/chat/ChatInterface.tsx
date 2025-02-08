@@ -2,7 +2,7 @@
 
 import { RefObject, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, Globe, Paperclip } from "lucide-react";
 import { marked } from "marked";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import styles from "./index.module.css";
@@ -19,14 +19,15 @@ interface InputContainerProps {
   rowSize: number;
   handleInputChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   handleKeyDownInput: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  toggleWebSearchBtnState: () => void;
   userMessage: string;
   inputRef: RefObject<HTMLTextAreaElement | null>;
   sendMessage: () => void;
   charCount: number;
   isResponseStreaming: boolean;
   characterLimit: number;
-  chatStarted: boolean;
   sendBtnRef: RefObject<HTMLButtonElement | null>;
+  isWebSearchActive: boolean;
 }
 
 // Props for the Footer component
@@ -43,6 +44,7 @@ export function ChatInterface({}) {
   const [characterLimit] = useState(10000);
   const [isResponseStreaming, setisResponseStreaming] = useState(false);
   const [userScrolledUp, setUserScrolledUp] = useState(false);
+  const [isWebSearchActive, setIsWebSearchActive] = useState(true);
 
   // Refs for managing chat input and scrolling
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
@@ -136,7 +138,11 @@ export function ChatInterface({}) {
     setUserScrolledUp(false);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/chat?message=${encodeURIComponent(message)}&session_id=testtessttest&uid=tesstuid&model=meta-llama/Meta-Llama-3.1-405B-Instruct`
+        `${
+          process.env.NEXT_PUBLIC_API_BASE_URL
+        }/api/chat?message=${encodeURIComponent(
+          message
+        )}&session_id=test_session&uid=test_uid&model=deepseek-chat`
       );
       if (!response.ok) {
         const errorBody = await response.json();
@@ -240,6 +246,10 @@ export function ChatInterface({}) {
     };
   }, [messages]);
 
+  // Toggle Web Search Tool
+  const toggleWebSearchBtnState = () => {
+    setIsWebSearchActive(!isWebSearchActive);
+  };
   return (
     <div
       className={`flex flex-col transition-all duration-300 ease-in-out bg-white dark:bg-black w-full h-full rounded-none shadow-lg absolute top-0 left-0`}
@@ -267,13 +277,16 @@ export function ChatInterface({}) {
 
         {/* Chat Body Start */}
         <div
-          className={`flex-grow overflow-auto scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600 scrollbar-track-white dark:scrollbar-track-black border-l-2 border-r-2 border-gray-200 dark:border-gray-900 pt-4 px-2 ${
+          className={`flex-grow overflow-auto scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600 scrollbar-track-white dark:scrollbar-track-black pt-4 px-2 ${
             chatStarted ? "pb-16" : "pb-4"
           }`}
           ref={chatBodyRef}
         >
           {chatStarted ? (
-            <div id="chat-body" className="mt-4 mb-4 mx-auto max-w-3xl w-full">
+            <div
+              id="chat-body"
+              className="mt-4 mb-4 mx-auto max-w-[850px] w-full"
+            >
               {messages.map((msg, index) => (
                 <div
                   key={index}
@@ -289,23 +302,27 @@ export function ChatInterface({}) {
                         : "bg-gray-100 dark:bg-gray-900 p-3 mr-1 sm:max-w-[70%] max-w-[80%]"
                     }`}
                   >
-                    {msg.sender === "bot" && (
-                      <Image
-                        src="/logo.png"
-                        alt="VAKX AI Avatar"
-                        width={32}
-                        height={32}
-                        className="rounded-full w-6 h-6 sm:w-8 sm:h-8"
-                      />
+                    {msg.sender === "bot" ? (
+                      <div className="flex justify-center items-top rounded-xl w-full p-1">
+                        <Image
+                          src="/logo.png"
+                          alt="VAKX AI Avatar"
+                          width={32}
+                          height={32}
+                          className="rounded-full w-6 h-6 sm:w-8 sm:h-8"
+                        />
+                        <div className="flex flex-col w-full">
+                          <div
+                            className={`max-w-full overflow-auto text-gray-900 dark:text-gray-100 ml-2 sm:ml-4`}
+                            dangerouslySetInnerHTML={{ __html: msg.message }}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col w-full">
+                        <div className="whitespace-pre-wrap">{msg.message}</div>
+                      </div>
                     )}
-                    <div className="flex flex-col w-full">
-                      <div
-                        className={`max-w-full overflow-auto text-gray-900 dark:text-gray-100 ${
-                          msg.sender === "bot" ? "ml-2 sm:ml-4" : "ml-0"
-                        }`}
-                        dangerouslySetInnerHTML={{ __html: msg.message }}
-                      />
-                    </div>
                   </div>
                 </div>
               ))}
@@ -323,48 +340,50 @@ export function ChatInterface({}) {
             </div>
           ) : (
             <div
-              className="mx-auto flex flex-col items-center justify-center"
+              className="mx-auto flex flex-col items-center justify-center max-w-[850px] w-full"
               style={{
                 display: "flex",
                 flexDirection: "column",
                 rowGap: "16px",
                 maxWidth: "768px",
               }}
-            >
-              <p className="text-justify px-20">What can I help you with?</p>
-            </div>
+            ></div>
           )}
         </div>
         {/* Chat Body End */}
 
         {/* Input Section Start */}
-        <div className="border-l-2 border-r-2 border-gray-200 dark:border-gray-900 rounded-none">
+        <div className={`${chatStarted ? "" : "mb-40"}`}>
+          {!chatStarted && (
+            <h2 className="text-center px-4">What can I help with?</h2>
+          )}
           <form
             onSubmit={(e) => {
               e.preventDefault();
               sendMessage();
             }}
-            style={{ padding: "16px" }}
+            className="p-4"
           >
-            <div className="relative mx-auto transition-all duration-300 ease-in-out mb-0 max-w-[768px]">
+            <div className="relative mx-auto transition-all duration-300 ease-in-out mb-0 max-w-[850px]">
               <InputContainer
                 rowSize={3}
                 handleInputChange={handleInputChange}
                 handleKeyDownInput={handleKeyDownInput}
+                toggleWebSearchBtnState={toggleWebSearchBtnState}
                 userMessage={userMessage}
                 inputRef={inputRef}
                 sendMessage={sendMessage}
                 charCount={charCount}
                 isResponseStreaming={isResponseStreaming}
                 characterLimit={characterLimit}
-                chatStarted={chatStarted}
                 sendBtnRef={sendBtnRef}
+                isWebSearchActive={isWebSearchActive}
               />
             </div>
           </form>
-          <Footer footerRef={footerRef} />
         </div>
         {/* Input Section End */}
+        <Footer footerRef={footerRef} />
       </div>
     </div>
   );
@@ -374,14 +393,15 @@ const InputContainer: React.FC<InputContainerProps> = ({
   rowSize,
   handleInputChange,
   handleKeyDownInput,
+  toggleWebSearchBtnState,
   userMessage,
   inputRef,
   sendMessage,
   charCount,
   isResponseStreaming,
   characterLimit,
-  chatStarted,
   sendBtnRef,
+  isWebSearchActive,
 }) => {
   const charCountClass =
     charCount > characterLimit
@@ -390,52 +410,37 @@ const InputContainer: React.FC<InputContainerProps> = ({
 
   return (
     <div className="input-container">
-      {chatStarted ? (
-        <div
-          id="input-form"
-          className="group flex items-end dynamic-text-base rounded-[24px] gap-2 p-1 text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-900 focus-within:bg-gray-200 dark:focus-within:bg-gray-800"
-        >
-          <textarea
-            rows={rowSize}
-            id="inputMessage"
-            ref={inputRef}
-            value={userMessage}
-            autoComplete="off"
-            placeholder="Message VAKGPT"
-            onChange={handleInputChange}
-            onKeyDown={handleKeyDownInput}
-            className="w-full resize-none text-gray-900 bg-gray-100 focus:bg-gray-200 dark:text-gray-100 dark:bg-gray-900 dark:focus:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 border-none outline-none p-3 rounded-3xl dynamic-text-base font-normal"
-          />
-
-          <button
-            ref={sendBtnRef}
-            onClick={sendMessage}
-            disabled={
-              !userMessage.trim() ||
-              charCount > characterLimit ||
-              isResponseStreaming
-            }
-            className={`flex items-center border-0 bg-black dark:bg-white text-white dark:text-black rounded-full disabled:opacity-50 p-2`}
-          >
-            <ArrowUp />
-          </button>
-        </div>
-      ) : (
-        <div
-          id="input-form"
-          className="group text-gray-900 flex items-end bg-gray-100 focus-within:bg-gray-200 dark:text-gray-100 dark:bg-gray-900 dark:focus-within:bg-gray-800 dynamic-text-base flex gap-2 p-1 rounded-3xl"
-        >
-          <textarea
-            rows={rowSize}
-            id="inputMessage"
-            ref={inputRef}
-            value={userMessage}
-            autoComplete="off"
-            placeholder="How can I assist you today?"
-            onChange={handleInputChange}
-            onKeyDown={handleKeyDownInput}
-            className="w-full resize-none text-gray-900 bg-gray-100 focus:bg-gray-200 dark:text-gray-100 dark:bg-gray-900 dark:focus:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 border-none outline-none p-3 rounded-3xl dynamic-text-base font-normal"
-          />
+      <div
+        id="input-form"
+        className="group text-gray-900 bg-gray-100 dark:text-gray-100 dark:bg-gray-900 dynamic-text-base gap-2 p-1 rounded-3xl"
+      >
+        <textarea
+          rows={rowSize}
+          id="inputMessage"
+          ref={inputRef}
+          value={userMessage}
+          autoComplete="off"
+          placeholder="Message VAKGPT"
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDownInput}
+        />
+        <div className="flex items-center justify-between">
+          <div className="flex justify-center gap-2">
+            <button className="flex items-center bg-gray-100 dark:bg-black text-gray-800 dark:text-gray-200 hover:bg-gray-300 border border-gray-300 rounded-full disabled:opacity-50 transition duration-300 py-2 px-3">
+              <Paperclip />
+            </button>
+            <button
+              onClick={toggleWebSearchBtnState}
+              className={`flex items-center ${
+                isWebSearchActive
+                  ? "bg-blue-500 hover:bg-blue-700 text-white"
+                  : "bg-gray-100 dark:bg-black text-gray-800 dark:text-gray-200 hover:bg-gray-300"
+              } border border-gray-300 rounded-full disabled:opacity-50 transition duration-300 py-2 px-3`}
+            >
+              <Globe className="mr-2" />
+              Search
+            </button>
+          </div>
 
           <button
             ref={sendBtnRef}
@@ -451,7 +456,7 @@ const InputContainer: React.FC<InputContainerProps> = ({
             <ArrowUp />
           </button>
         </div>
-      )}
+      </div>
 
       <div className="font-sans char-counter text-sm text-gray-500 text-right mt-1">
         <span id="char-count" className={charCountClass}>
@@ -466,9 +471,13 @@ const InputContainer: React.FC<InputContainerProps> = ({
 const Footer: React.FC<FooterProps> = ({ footerRef }) => {
   return (
     <div
-      className="bg-gray-100 dark:bg-gray-900 font-sans flex relative text-sm text-gray-500 items-center justify-center rounded-none pt-2 pb-2"
+      className="flex relative items-center justify-center rounded-none pt-2 pb-2"
       ref={footerRef}
-    ></div>
+    >
+      <span className="text-xs text-gray-500">
+        VAKGPT can make mistakes. Check important info.
+      </span>
+    </div>
   );
 };
 
