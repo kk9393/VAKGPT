@@ -87,8 +87,24 @@
 }
 
 .VAKChatBaseStyleDark pre {
-  @apply text-gray-100 bg-gray-800 rounded-lg overflow-x-auto text-sm font-mono my-4 !important;
+  @apply text-gray-100 bg-gray-800 border border-gray-700 rounded-lg overflow-x-auto text-sm font-mono my-4 !important;
   padding: "16px" !important;
+}
+
+.VAKChatBaseStyleDark pre::-webkit-scrollbar {
+  @apply w-2 h-2 bg-gray-800 rounded-full;
+}
+
+.VAKChatBaseStyleDark pre::-webkit-scrollbar-thumb {
+  @apply bg-gray-600 rounded-full;
+}
+
+.VAKChatBaseStyleDark pre::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
+
+.VAKChatBaseStyleDark pre::-webkit-scrollbar-track {
+  @apply bg-gray-900;
 }
 
 .VAKChatBaseStyleDark code {
@@ -271,8 +287,24 @@
 }
 
 .VAKChatBaseStyleLight pre {
-  @apply text-gray-900 bg-gray-200  rounded-lg overflow-x-auto text-sm font-mono my-4 !important;
+  @apply text-gray-900 bg-gray-200 border border-gray-300 rounded-lg overflow-x-auto text-sm font-mono my-4 !important;
   padding: 16px !important;
+}
+
+.VAKChatBaseStyleLight pre::-webkit-scrollbar {
+  @apply w-2 h-2 bg-gray-200 rounded-full;
+}
+
+.VAKChatBaseStyleLight pre::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded-full;
+}
+
+.VAKChatBaseStyleLight pre::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
+
+.VAKChatBaseStyleLight pre::-webkit-scrollbar-track {
+  @apply bg-gray-100;
 }
 
 .VAKChatBaseStyleLight code {
