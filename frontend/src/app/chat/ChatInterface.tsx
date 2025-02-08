@@ -426,10 +426,7 @@ const InputContainer: React.FC<InputContainerProps> = ({
         />
         <div className="flex items-center justify-between">
           <div className="flex justify-center gap-2">
-            <button
-              onClick={sendMessage}
-              className="flex items-center bg-gray-100 dark:bg-black text-gray-800 dark:text-gray-200 hover:bg-gray-300 border border-gray-300 rounded-full disabled:opacity-50 transition duration-300 py-2 px-3"
-            >
+            <button className="flex items-center bg-gray-100 dark:bg-black text-gray-800 dark:text-gray-200 hover:bg-gray-300 border border-gray-300 rounded-full disabled:opacity-50 transition duration-300 py-2 px-3">
               <Paperclip />
             </button>
             <button
