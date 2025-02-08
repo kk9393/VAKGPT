@@ -142,7 +142,7 @@ export function ChatInterface({}) {
           process.env.NEXT_PUBLIC_API_BASE_URL
         }/api/chat?message=${encodeURIComponent(
           message
-        )}&session_id=test_session&uid=test_uid&model=meta-llama/deepseek-chat`
+        )}&session_id=test_session&uid=test_uid&model=deepseek-chat`
       );
       if (!response.ok) {
         const errorBody = await response.json();
@@ -277,7 +277,7 @@ export function ChatInterface({}) {
 
         {/* Chat Body Start */}
         <div
-          className={`flex-grow overflow-auto scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600 scrollbar-track-white dark:scrollbar-track-black border-l-2 border-r-2 border-gray-200 dark:border-gray-900 pt-4 px-2 ${
+          className={`flex-grow overflow-auto scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600 scrollbar-track-white dark:scrollbar-track-black pt-4 px-2 ${
             chatStarted ? "pb-16" : "pb-4"
           }`}
           ref={chatBodyRef}
@@ -355,13 +355,13 @@ export function ChatInterface({}) {
         {/* Chat Body End */}
 
         {/* Input Section Start */}
-        <div className="border-l-2 border-r-2 border-gray-200 dark:border-gray-900 rounded-none">
+        <div className={`${chatStarted ? "" : "mb-40"}`}>
           <form
             onSubmit={(e) => {
               e.preventDefault();
               sendMessage();
             }}
-            style={{ padding: "16px" }}
+            className="p-4"
           >
             <div className="relative mx-auto transition-all duration-300 ease-in-out mb-0 max-w-[850px]">
               <InputContainer
@@ -422,7 +422,6 @@ const InputContainer: React.FC<InputContainerProps> = ({
           placeholder="Message VAKGPT"
           onChange={handleInputChange}
           onKeyDown={handleKeyDownInput}
-          className="w-full resize-none text-gray-900 bg-gray-100 focus:bg-gray-200 dark:text-gray-100 dark:bg-gray-900 dark:focus:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 border-none outline-none p-3 rounded-3xl dynamic-text-base font-normal"
         />
         <div className="flex items-center justify-between">
           <div className="flex justify-center gap-2">
