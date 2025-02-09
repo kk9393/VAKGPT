@@ -1,9 +1,15 @@
-from fastapi import APIRouter, Query, Depends
+from fastapi import APIRouter, Depends, UploadFile, File, Form
 from app.controllers import chat_controller
 from app.middleware.auth_middleware import verify_jwt
 
 router = APIRouter()
 
-@router.get("/chat")
-async def chat(message: str = Query(...), session_id: str = Query(...), model: str = Query(...), user: dict = Depends(verify_jwt)):
-    return await chat_controller.chat(message, session_id, model, user)
+@router.post("/chat")
+async def chat(
+    message: str = Form(...),
+    session_id: str = Form(...),
+    model: str = Form(...),
+    user: dict = Depends(verify_jwt),
+    file: UploadFile = File(None)  # Optional file upload
+):
+    return await chat_controller.chat(message, session_id, model, user, file)
