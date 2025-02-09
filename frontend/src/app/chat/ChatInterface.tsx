@@ -2,7 +2,7 @@
 
 import { RefObject, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ArrowUp, Globe, Paperclip } from "lucide-react";
+import { ArrowUp, Globe, Paperclip, X } from "lucide-react";
 import { marked } from "marked";
 import Cookies from "js-cookie";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -34,6 +34,9 @@ interface InputContainerProps {
   characterLimit: number;
   sendBtnRef: RefObject<HTMLButtonElement | null>;
   isWebSearchActive: boolean;
+  handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  file: File | null;
+  clearFile: () => void;
 }
 
 // Props for the Footer component
@@ -54,6 +57,7 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
   const [page, setPage] = useState(1);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
 
   // Refs for managing chat input and scrolling
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
@@ -104,14 +108,10 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
 
       if (data?.messages.length === 0) {
         setHasMoreMessages(false);
-        if(currentPage === 1){
-          setChatStarted(false)
-        }
         return;
       }
-      
-      setChatStarted(true)
-      const formattedMessages = data.messages.reverse().map( (msg: any) => ({
+
+      const formattedMessages = data.messages.reverse().map((msg: any) => ({
         id: msg.id,
         message: msg.sender === "ai" ? marked.parse(msg.message) : msg.message,
         timestamp: msg.timestamp,
@@ -119,8 +119,10 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
       }));
 
       if (currentPage === 1) {
+        // New session: reset messages
         setMessages(formattedMessages);
       } else {
+        // Pagination: prepend older messages to existing ones
         setMessages((prevMessages) => [...formattedMessages, ...prevMessages]);
       }
 
@@ -204,6 +206,16 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
     }
   };
 
+  // Function to handle the attach file button
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setFile(event.target.files[0]);
+    }
+  };
+
+  const clearFile = () => {
+    setFile(null);
+  };
   // Function to send user message
   const sendMessage = async () => {
     if (!userMessage.trim()) return;
@@ -222,21 +234,25 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
     setUserScrolledUp(false);
     try {
       const token = Cookies.get("token");
-      const headers: HeadersInit = {
-        "Content-Type": "application/json",
-      };
+      const headers: HeadersInit = {};
       if (token) {
         headers.Authorization = `Bearer ${token}`;
       }
+      const formData = new FormData();
+      formData.append("message", message || "");
+      formData.append("session_id", selectedSession || "");
+      formData.append("model", "deepseek-chat");
+
+      if (file) {
+        formData.append("file", file);
+      }
+
       const response = await fetch(
-        `${
-          process.env.NEXT_PUBLIC_API_BASE_URL
-        }/api/chat?message=${encodeURIComponent(
-          message
-        )}&session_id=${selectedSession}&model=deepseek-chat`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/chat`,
         {
-          method: "GET",
+          method: "POST",
           headers,
+          body: formData,
         }
       );
       if (!response.ok) {
@@ -480,6 +496,9 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
                 characterLimit={characterLimit}
                 sendBtnRef={sendBtnRef}
                 isWebSearchActive={isWebSearchActive}
+                handleFileChange={handleFileChange}
+                file={file}
+                clearFile={clearFile}
               />
             </div>
           </form>
@@ -504,6 +523,9 @@ const InputContainer: React.FC<InputContainerProps> = ({
   characterLimit,
   sendBtnRef,
   isWebSearchActive,
+  handleFileChange,
+  file,
+  clearFile, // ✅ Accept clearFile function
 }) => {
   const charCountClass =
     charCount > characterLimit
@@ -526,11 +548,41 @@ const InputContainer: React.FC<InputContainerProps> = ({
           onChange={handleInputChange}
           onKeyDown={handleKeyDownInput}
         />
+
+        {/* ✅ Show File Name with Delete Option */}
+        {file && (
+          <div className="flex items-center space-x-2 my-2 text-sm w-max bg-gray-200 border py-1 px-2 rounded-full">
+            <span>{file.name}</span>
+            <button
+              onClick={clearFile} // ✅ Calls clearFile instead of passing null
+              className="hover:text-red-500"
+            >
+              <X className="w-4 h-4 text-gray-500" />
+            </button>
+          </div>
+        )}
+
         <div className="flex items-center justify-between">
           <div className="flex justify-center gap-2">
-            <button className="flex items-center bg-gray-100 dark:bg-black text-gray-800 dark:text-gray-200 hover:bg-gray-300 border border-gray-300 rounded-full disabled:opacity-50 transition duration-300 py-2 px-3">
-              <Paperclip />
-            </button>
+            <div className="flex items-center gap-2">
+              {/* Hidden File Input */}
+              <input
+                type="file"
+                accept="application/pdf"
+                id="fileInput"
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+              />
+
+              {/* Paperclip Label to Trigger File Input */}
+              <label
+                htmlFor="fileInput"
+                className="flex items-center cursor-pointer bg-gray-100 dark:bg-black text-gray-800 dark:text-gray-200 hover:bg-gray-300 border border-gray-300 rounded-full transition duration-300 py-2 px-3"
+              >
+                <Paperclip />
+              </label>
+            </div>
+
             <button
               onClick={toggleWebSearchBtnState}
               className={`flex items-center ${
