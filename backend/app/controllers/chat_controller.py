@@ -35,9 +35,13 @@ async def chat_prepare(
 
     return chat_flow
 
-async def chat(message: str, session_id: str, model: str, user: dict, file: UploadFile = None):
+async def chat(message: str, session_id: str, model: str, user: dict, temp_user: str, file: UploadFile = None):
     try:
-        userid = user["userid"]
+        
+        if user is "TEMP":
+            userid = temp_user
+        else:
+            userid = user["userid"]
 
         file_path = None
         if file:

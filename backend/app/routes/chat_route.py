@@ -10,6 +10,7 @@ async def chat(
     session_id: str = Form(...),
     model: str = Form(...),
     user: dict = Depends(verify_jwt),
-    file: UploadFile = File(None)  # Optional file upload
+    temp_user: str = Form(...),
+    file: UploadFile = File(None)
 ):
-    return await chat_controller.chat(message, session_id, model, user, file)
+    return await chat_controller.chat(message, session_id, model, user, temp_user, file)

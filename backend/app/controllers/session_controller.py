@@ -6,11 +6,15 @@ async def get_sessions(user: dict):
     """
     Fetches the list of unique chat sessions for a user, sorted by the latest timestamp.
     """
+    # Check if 'userid' exists in the user dictionary
+    if "userid" not in user:
+        return {"sessions": []}
+
     userid = user["userid"]
-    db = client.VAKGPTChatHistory
-    collection = db[userid]
 
     try:
+        db = client.VAKGPTChatHistory
+        collection = db[userid]
         pipeline = [
             {"$group": {"_id": "$session_id", "latest_timestamp": {"$max": "$timestamp"}}},
             {"$sort": {"latest_timestamp": -1}}
@@ -24,7 +28,6 @@ async def get_sessions(user: dict):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-    
 
 async def get_session_chat(session_id: str, page: int, user: dict):
     """Fetch session chat history for the given session ID with pagination"""

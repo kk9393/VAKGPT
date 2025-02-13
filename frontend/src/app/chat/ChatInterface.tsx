@@ -232,6 +232,17 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
   const clearFile = () => {
     setFile(null);
   };
+
+  function generateTempUser() {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let result = 'TEMP_';
+    for (let i = 0; i < 25; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
   // Function to send user message
   const sendMessage = async () => {
     if (!userMessage.trim()) return;
@@ -249,15 +260,19 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
     setisResponseAwaiting(true);
     setUserScrolledUp(false);
     try {
+      let temp_user = ""
       const token = Cookies.get("token");
       const headers: HeadersInit = {};
       if (token) {
         headers.Authorization = `Bearer ${token}`;
+      } else {
+        temp_user = generateTempUser()
       }
       const formData = new FormData();
       formData.append("message", message || "");
       formData.append("session_id", selectedSession || "");
       formData.append("model", "meta-llama/Meta-Llama-3.1-405B-Instruct");
+      formData.append("temp_user", temp_user);
 
       if (file) {
         formData.append("file", file);

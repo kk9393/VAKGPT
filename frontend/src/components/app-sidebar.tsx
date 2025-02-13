@@ -75,7 +75,7 @@ export function AppSidebar({
           setSelectedSession(fetchedSessions[0]);
         }
 
-        if(fetchedSessions.length == 0){
+        if(fetchedSessions.length == 0 && selectedSession == null){
           createNewSession()
         }
       } catch (error) {
