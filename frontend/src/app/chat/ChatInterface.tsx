@@ -593,7 +593,6 @@ const InputContainer: React.FC<InputContainerProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex justify-center gap-2">
             <div className="flex items-center gap-2">
-              {/* Hidden File Input */}
               <input
                 type="file"
                 accept="application/pdf"
@@ -602,7 +601,6 @@ const InputContainer: React.FC<InputContainerProps> = ({
                 style={{ display: "none" }}
               />
 
-              {/* Paperclip Label to Trigger File Input */}
               <label
                 htmlFor="fileInput"
                 className="flex items-center cursor-pointer bg-gray-100 dark:bg-black text-gray-800 dark:text-gray-200 hover:bg-gray-300 border border-gray-300 rounded-full transition duration-300 py-2 px-3"
