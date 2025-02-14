@@ -592,7 +592,7 @@ const InputContainer: React.FC<InputContainerProps> = ({
 
         <div className="flex items-center justify-between">
           <div className="flex justify-center gap-2">
-            <div className="flex items-center gap-2">
+            <div className="hidden flex items-center gap-2">
               <input
                 type="file"
                 accept="application/pdf"
@@ -611,7 +611,7 @@ const InputContainer: React.FC<InputContainerProps> = ({
 
             <button
               onClick={toggleWebSearchBtnState}
-              className={`flex items-center ${
+              className={`hidden flex items-center ${
                 isWebSearchActive
                   ? "bg-blue-500 hover:bg-blue-700 text-white"
                   : "bg-gray-100 dark:bg-black text-gray-800 dark:text-gray-200 hover:bg-gray-300"
