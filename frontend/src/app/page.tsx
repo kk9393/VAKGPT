@@ -15,7 +15,7 @@ export default function Home() {
 
   const handleKeyDownInput = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
-      e.preventDefault(); // Prevent default behavior of Enter key in textarea
+      e.preventDefault();
       console.log("User pressed Enter");
       handleQuerySubmit();
     }
@@ -47,11 +47,9 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Image
+              <img
                 src="https://img.shields.io/github/stars/kk9393/VAKGPT?style=social"
                 alt="GitHub Repo stars"
-                width={100}
-                height={20}
               />
             </a>
           </div>
