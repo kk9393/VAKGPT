@@ -13,7 +13,18 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import { useAuth } from "@/app/context/AuthContext";
+import { loginWithGoogle } from "@/lib/auth";
+import { Button } from "./ui/button";
 
 export function NavMain({
   items,
@@ -33,12 +44,9 @@ export function NavMain({
   createNewSession: () => void;
 }) {
   const { user } = useAuth();
-
   const handleNewChat = () => {
     if (user) {
       createNewSession();
-    } else {
-      // open login modal
     }
   };
 
@@ -46,13 +54,31 @@ export function NavMain({
     <SidebarGroup>
       <SidebarMenu>
         <SidebarMenuItem className="pb-4" onClick={handleNewChat}>
-          <SidebarMenuButton
-            className="rounded bg-secondary h-full"
-            tooltip={"New Chat"}
-          >
-            <Edit />
-            <span>New Chat</span>
-          </SidebarMenuButton>
+          {user ? (
+            <SidebarMenuButton className="rounded bg-secondary h-full">
+              <Edit size={20} />
+              <span>New Chat</span>
+            </SidebarMenuButton>
+          ) : (
+            <Dialog>
+              <DialogTrigger className="flex items-center gap-2 text-sm w-full rounded bg-secondary m-2 p-2">
+                <Edit size={20} />
+                <span>New Chat</span>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Create New Chat Session?</DialogTitle>
+                  <DialogDescription>
+                    Log in to initiate a new chat session and preserve your
+                    conversation history.
+                  </DialogDescription>
+                  <Button onClick={loginWithGoogle} className="w-full">
+                    Login
+                  </Button>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
+          )}
         </SidebarMenuItem>
 
         {items.map((item) => (
@@ -76,9 +102,7 @@ export function NavMain({
                     <SidebarMenuSubItem
                       key={subItem.key}
                       className={`cursor-pointer ${
-                        subItem.isSelected
-                          ? "bg-gray-200 dark:bg-gray-700"
-                          : ""
+                        subItem.isSelected ? "bg-gray-200 dark:bg-gray-700" : ""
                       }`}
                     >
                       <SidebarMenuSubButton asChild>
