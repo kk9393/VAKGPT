@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useAuth } from "@/app/context/AuthContext";
 import { NavMain } from "@/components/nav-main";
@@ -35,7 +35,7 @@ export function AppSidebar({
         chars.charAt(Math.floor(Math.random() * chars.length))
       ).join("");
     };
-  
+
     const newSessionId = generateRandomString(20);
     setSessions((prev) => [newSessionId, ...prev]);
     setSelectedSession(newSessionId);
@@ -52,31 +52,30 @@ export function AppSidebar({
 
         if (token) {
           headers.Authorization = `Bearer ${token}`;
-        }
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/session/get_sessions`,
+            {
+              method: "GET",
+              headers,
+            }
+          );
 
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/session/get_sessions`,
-          {
-            method: "GET",
-            headers,
+          if (!response.ok) {
+            throw new Error("Failed to fetch sessions");
           }
-        );
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch sessions");
-        }
+          const data = await response.json();
+          const fetchedSessions = data?.sessions || [];
 
-        const data = await response.json();
-        const fetchedSessions = data?.sessions || [];
+          setSessions(fetchedSessions);
 
-        setSessions(fetchedSessions);
+          if (fetchedSessions.length > 0 && !selectedSession) {
+            setSelectedSession(fetchedSessions[0]);
+          }
 
-        if (fetchedSessions.length > 0 && !selectedSession) {
-          setSelectedSession(fetchedSessions[0]);
-        }
-
-        if(fetchedSessions.length == 0 && selectedSession == null){
-          createNewSession()
+          if (fetchedSessions.length == 0 && selectedSession == null) {
+            createNewSession();
+          }
         }
       } catch (error) {
         console.error("Error fetching sessions:", error);
@@ -99,7 +98,7 @@ export function AppSidebar({
                 title: session,
                 key: session,
                 onClick: () => setSelectedSession(session),
-                isSelected: selectedSession === session, 
+                isSelected: selectedSession === session,
               })),
             },
           ]}

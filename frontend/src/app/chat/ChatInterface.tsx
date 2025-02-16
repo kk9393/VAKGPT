@@ -24,7 +24,7 @@ interface RawMessage {
 
 // Props for `ChatInterface`
 interface ChatInterfaceProps {
-  selectedSession: string | null;
+  selectedSession: string;
 }
 
 // Props for the InputContainer component
@@ -267,8 +267,8 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
         temp_user = generateTempUser();
       }
       const formData = new FormData();
-      formData.append("message", message || "");
-      formData.append("session_id", selectedSession || "");
+      formData.append("message", message);
+      formData.append("session_id", selectedSession);
       formData.append("model", "meta-llama/Meta-Llama-3.1-405B-Instruct");
       formData.append("temp_user", temp_user);
 
