@@ -79,31 +79,31 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
       try {
         setLoadingMessages(true);
         const token = Cookies.get("token");
-  
+
         const headers: HeadersInit = {
           "Content-Type": "application/json",
         };
-  
+
         if (token) {
           headers.Authorization = `Bearer ${token}`;
         }
-  
+
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/session/get_session_chat?session_id=${selectedSession}&page=${currentPage}`,
           { method: "GET", headers }
         );
-  
+
         if (!response.ok) {
           throw new Error("Failed to fetch chat history");
         }
-  
+
         const data = await response.json();
-  
+
         if (data?.messages.length === 0) {
           setHasMoreMessages(false);
           return;
         }
-  
+
         const formattedMessages: Message[] = data.messages
           .reverse()
           .map((msg: RawMessage) => ({
@@ -113,13 +113,16 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
             timestamp: msg.timestamp,
             sender: msg.sender === "ai" ? "bot" : "user",
           }));
-  
+
         if (currentPage === 1) {
           setMessages(formattedMessages);
         } else {
-          setMessages((prevMessages) => [...formattedMessages, ...prevMessages]);
+          setMessages((prevMessages) => [
+            ...formattedMessages,
+            ...prevMessages,
+          ]);
         }
-  
+
         setHasMoreMessages(data.pagination.has_next_page);
       } catch (error) {
         console.error("Error fetching chat history:", error);
@@ -129,12 +132,9 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
     },
     [selectedSession, setLoadingMessages, setHasMoreMessages, setMessages]
   );
-  
+
   useEffect(() => {
     if (!selectedSession) return;
-
-
-    // Clear messages and reset page when session changes
     setMessages([]);
     setPage(1);
     fetchMessages(1);
@@ -152,7 +152,6 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
       setPage((prevPage) => prevPage + 1);
     }
   }, [hasMoreMessages, loadingMessages, setPage]);
-  
 
   // Prevent scrolling inside chat reference
   const handleChatRefScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -232,14 +231,15 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
   };
 
   function generateTempUser() {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     const charactersLength = characters.length;
-    let result = 'TEMP_';
+    let result = "TEMP_";
     for (let i = 0; i < 25; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
-}
+  }
 
   // Function to send user message
   const sendMessage = async () => {
@@ -258,13 +258,13 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
     setisResponseAwaiting(true);
     setUserScrolledUp(false);
     try {
-      let temp_user = ""
+      let temp_user = "";
       const token = Cookies.get("token");
       const headers: HeadersInit = {};
       if (token) {
         headers.Authorization = `Bearer ${token}`;
       } else {
-        temp_user = generateTempUser()
+        temp_user = generateTempUser();
       }
       const formData = new FormData();
       formData.append("message", message || "");
@@ -356,19 +356,19 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
       });
     }
   }, [chatBodyRef, userScrolledUp]);
-  
+
   const handleScroll = useCallback(() => {
     if (!chatBodyRef.current) return;
-  
+
     const { scrollTop, scrollHeight, clientHeight } = chatBodyRef.current;
-  
+
     // Detect user scrolling
     if (scrollTop + clientHeight + 15 < scrollHeight) {
       setUserScrolledUp(true);
     } else {
       setUserScrolledUp(false);
     }
-  
+
     // If scrolled to the top, load more messages
     if (scrollTop === 0) {
       loadMoreMessages();
@@ -579,10 +579,7 @@ const InputContainer: React.FC<InputContainerProps> = ({
         {file && (
           <div className="flex items-center space-x-2 my-2 text-sm w-max bg-gray-200 border py-1 px-2 rounded-full">
             <span>{file.name}</span>
-            <button
-              onClick={clearFile}
-              className="hover:text-red-500"
-            >
+            <button onClick={clearFile} className="hover:text-red-500">
               <X className="w-4 h-4 text-gray-500" />
             </button>
           </div>
