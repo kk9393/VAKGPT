@@ -115,10 +115,8 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
           }));
   
         if (currentPage === 1) {
-          // New session: reset messages
           setMessages(formattedMessages);
         } else {
-          // Pagination: prepend older messages to existing ones
           setMessages((prevMessages) => [...formattedMessages, ...prevMessages]);
         }
   
