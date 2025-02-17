@@ -64,7 +64,7 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [chatStarted, setChatStarted] = useState<boolean>(true);
+  const [chatStarted, setChatStarted] = useState<boolean>(false);
 
   // Refs for managing chat input and scrolling
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
@@ -101,7 +101,10 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
 
         if (data?.messages.length === 0) {
           setHasMoreMessages(false);
+          setChatStarted(false);
           return;
+        } else {
+          setChatStarted(true);
         }
 
         const formattedMessages: Message[] = data.messages
@@ -256,6 +259,7 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
     setisResponseStreaming(true);
     setisResponseAwaiting(true);
     setUserScrolledUp(false);
+    setChatStarted(true);
     try {
       let temp_user = "";
       const token = Cookies.get("token");
@@ -389,15 +393,6 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
       }
     };
   }, [messages, SmoothScrollToCurrentMessage, handleScroll, userScrolledUp]);
-
-  // Set if the chat has been started
-  useEffect(() => {
-    if (messages.length == 0) {
-      setChatStarted(false);
-    } else {
-      setChatStarted(true);
-    }
-  }, [messages, setChatStarted]);
 
   // Toggle Web Search Tool
   const toggleWebSearchBtnState = () => {
