@@ -52,7 +52,6 @@ interface FooterProps {
 }
 
 export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
-  const [chatStarted, setChatStarted] = useState<boolean>(true);
   const [userMessage, setUserMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isResponseAwaiting, setisResponseAwaiting] = useState(false);
@@ -65,6 +64,7 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+  const [chatStarted, setChatStarted] = useState<boolean>(true);
 
   // Refs for managing chat input and scrolling
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
@@ -245,7 +245,6 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
   const sendMessage = async () => {
     if (!userMessage.trim()) return;
     const message = userMessage.trim();
-    setChatStarted(true);
     const newMessage: Message = {
       id: Math.random().toString(36).substring(2, 10),
       message,
@@ -390,6 +389,15 @@ export function ChatInterface({ selectedSession }: ChatInterfaceProps) {
       }
     };
   }, [messages, SmoothScrollToCurrentMessage, handleScroll, userScrolledUp]);
+
+  // Set if the chat has been started
+  useEffect(() => {
+    if (messages.length == 0) {
+      setChatStarted(false);
+    } else {
+      setChatStarted(true);
+    }
+  }, [messages, setChatStarted]);
 
   // Toggle Web Search Tool
   const toggleWebSearchBtnState = () => {
