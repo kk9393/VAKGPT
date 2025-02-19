@@ -11,6 +11,13 @@ Scalable: Designed to handle large volumes of conversations and user interaction
 Open-Source: Community-driven development and maintenance
 
 
+## Hosted Version
+
+Hosted version can be found on [vakgpt.com](https://vakgpt.com)
+> [!WARNING]
+> **Warning:** The product is currently in the early stages of development and contains some bugs. Please use it with caution.
+
+
 ## Instructions:
 
 1. Clone the repository:
