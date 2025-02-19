@@ -15,7 +15,7 @@ Open-Source: Community-driven development and maintenance
 
 Hosted version can be found on [vakgpt.com](https://vakgpt.com)
 > [!WARNING]
-> **Warning:** The product is currently in the early stages of development and contains some bugs. Please use it with caution.
+> The product is currently in the early stages of development and contains some bugs. Please use it with caution.
 
 
 ## Instructions:
