@@ -1,3 +1,4 @@
+import os
 import jwt as pyjwt
 import datetime
 import secrets
@@ -67,7 +68,8 @@ async def callback(provider: str, code: str):
     }
     jwt_token = pyjwt.encode(payload, settings.JWT_SECRET_KEY, algorithm="HS256")
 
-    redirect_url = f"http://localhost:3000/chat?token={jwt_token}"
+    CORS_ORIGIN = os.getenv("CORS_ORIGIN")
+    redirect_url = f"{CORS_ORIGIN}/chat?token={jwt_token}"
     print(f"🔄 Redirecting to: {redirect_url}")
 
     return RedirectResponse(url=redirect_url, status_code=303)
