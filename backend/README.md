@@ -32,7 +32,7 @@ A FastAPI backend using LangChain for AI-powered chat streaming.
     # JWT Secret Key
     JWT_SECRET_KEY="your_secret_key_here"
 
-    CORS_ORIGIN="http://localhost:3000"
+    CORS_ORIGIN="http://localhost:3000" or "https://yourdomain.com"
 
     ```
 3. **Run the server**
