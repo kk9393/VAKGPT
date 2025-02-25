@@ -7,9 +7,9 @@ from dotenv import load_dotenv
 from fastapi import HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
 
-from app.services.PromptManager import PromptManager
-from app.services.LLMManager import LLMManager
-from app.services.MongoDBChainOrchestrator import MongoDBChainOrchestrator
+from backend.app.services.PromptManager import PromptManager
+from backend.app.services.LLMManager import LLMManager
+from backend.app.services.MongoDBChainOrchestrator import MongoDBChainOrchestrator
 
 load_dotenv()
 
