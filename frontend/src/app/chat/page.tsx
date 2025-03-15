@@ -28,18 +28,20 @@ export default function Page() {
 
   useEffect(() => {
     setTheme("light");
-  });
+  }, []);
+  
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get("token");
-
-    if (token) {
+  
+    if (token && !Cookies.get("token")) {
       Cookies.set("token", token, { expires: 7 });
       login(token);
       router.replace("/chat");
     }
   }, [login, router]);
+  
 
   return (
     <SidebarProvider>
