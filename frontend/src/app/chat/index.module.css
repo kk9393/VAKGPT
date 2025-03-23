@@ -1,386 +1,159 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
-/* Dark theme  */
+/* === Dark Theme === */
+.VAKChatBaseStyleDark {
+  @apply text-gray-100 bg-gray-900 font-sans;
+}
+
 .VAKChatBaseStyleDark h1 {
-  @apply text-gray-100 text-4xl font-bold !important;
-  margin-top: 24px !important;
-  margin-bottom: 16px !important;
+  @apply text-4xl font-bold mt-6 mb-4;
 }
 
 .VAKChatBaseStyleDark h2 {
-  @apply text-gray-100 text-3xl font-semibold !important;
-  margin-top: 24px !important;
-  margin-bottom: 16px !important;
+  @apply text-3xl font-semibold mt-6 mb-4;
 }
 
 .VAKChatBaseStyleDark h3 {
-  @apply text-gray-100 text-2xl font-medium !important;
-  margin-top: 20px !important;
-  margin-bottom: 12px !important;
+  @apply text-2xl font-medium mt-5 mb-3;
 }
 
 .VAKChatBaseStyleDark h4 {
-  @apply text-gray-100 text-xl font-medium !important;
-  margin-top: 16px !important;
-  margin-bottom: 12px !important;
+  @apply text-xl font-medium mt-4 mb-3;
 }
 
 .VAKChatBaseStyleDark h5 {
-  @apply text-gray-100 text-lg font-medium !important;
-  margin-top: 16px !important;
-  margin-bottom: 8px !important;
+  @apply text-lg font-medium mt-4 mb-2;
 }
 
 .VAKChatBaseStyleDark h6 {
-  @apply text-gray-100 text-base font-medium !important;
-  margin-top: 12px !important;
-  margin-bottom: 8px !important;
+  @apply text-base font-medium mt-3 mb-2;
 }
 
-.VAKChatBaseStyleDark p {
-  @apply text-gray-100 text-base font-normal !important;
-}
-
-.VAKChatBaseStyleDark div {
-  @apply text-gray-100 text-base font-normal;
-}
-
-.VAKChatBaseStyleDark span {
-  @apply text-gray-500 text-sm font-normal !important;
+.VAKChatBaseStyleDark p,
+.VAKChatBaseStyleDark div,
+.VAKChatBaseStyleDark li {
+  @apply text-base leading-relaxed;
 }
 
 .VAKChatBaseStyleDark ul {
-  @apply text-gray-100 list-disc !important;
-  padding-left: 8px !important;
-  margin-top: 8px !important;
-  margin-bottom: 8px !important;
-}
-
-@media (min-width: 640px) {
-  .VAKChatBaseStyleDark ul {
-    padding-left: 8px !important;
-  }
+  @apply list-disc pl-5 my-2;
 }
 
 .VAKChatBaseStyleDark ol {
-  @apply text-gray-100 list-decimal !important;
-  padding-left: 8px !important;
-  margin-top: 8px !important;
-  margin-bottom: 8px !important;
-}
-
-@media (min-width: 640px) {
-  .VAKChatBaseStyleDark ol {
-    padding-left: 8px !important;
-  }
-}
-
-.VAKChatBaseStyleDark li {
-  @apply text-gray-100 font-normal text-base !important;
-  margin-bottom: 8px !important;
+  @apply list-decimal pl-5 my-2;
 }
 
 .VAKChatBaseStyleDark blockquote {
-  @apply text-gray-100 border-l-4 border-gray-700 italic text-base !important;
-  padding-left: 16px !important;
-  margin-bottom: 16px !important;
+  @apply border-l-4 border-gray-700 pl-4 italic my-4;
 }
 
 .VAKChatBaseStyleDark pre {
-  @apply text-gray-100 bg-gray-800 border border-gray-700 rounded-lg overflow-x-auto text-sm font-mono my-4 !important;
-  padding: "16px" !important;
-}
-
-.VAKChatBaseStyleDark pre::-webkit-scrollbar {
-  @apply w-2 h-2 bg-gray-800 rounded-full;
-}
-
-.VAKChatBaseStyleDark pre::-webkit-scrollbar-thumb {
-  @apply bg-gray-600 rounded-full;
-}
-
-.VAKChatBaseStyleDark pre::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-500;
-}
-
-.VAKChatBaseStyleDark pre::-webkit-scrollbar-track {
-  @apply bg-gray-900;
+  @apply bg-gray-800 text-sm font-mono rounded-lg border border-gray-700 overflow-x-auto p-4 my-4;
 }
 
 .VAKChatBaseStyleDark code {
-  @apply text-gray-100 bg-gray-800 rounded font-mono text-sm !important;
-  padding-left: 8px !important;
-  padding-right: 8px !important;
-  padding-top: 4px !important;
-  padding-bottom: 4px !important;
+  @apply bg-gray-800 text-sm font-mono rounded px-2 py-1;
 }
 
 .VAKChatBaseStyleDark a {
-  @apply text-gray-100 underline hover:text-gray-500 text-base !important;
+  @apply underline hover:text-gray-400;
 }
 
 .VAKChatBaseStyleDark table {
-  @apply text-gray-100 min-w-full border-collapse text-base text-base my-4 !important;
-  margin-bottom: 16px !important;
+  @apply table-auto border-collapse w-full my-4 text-sm;
 }
 
 .VAKChatBaseStyleDark th {
-  @apply text-gray-100 bg-gray-900 font-semibold border border-gray-200 text-base !important;
-  padding-left: 16px !important;
-  padding-right: 16px !important;
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
+  @apply bg-gray-900 font-semibold border border-gray-700 px-4 py-2;
 }
 
 .VAKChatBaseStyleDark td {
-  @apply text-gray-100 border border-gray-200 text-base !important;
-  border-bottom: 1px solid #2d3748 !important;
-  padding-left: 16px !important;
-  padding-right: 16px !important;
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
+  @apply border border-gray-700 px-4 py-2;
 }
 
 .VAKChatBaseStyleDark hr {
-  @apply text-gray-700 border-t-0 border-gray-300 !important;
-  margin-top: 16px !important;
-  margin-bottom: 16px !important;
-}
-
-.VAKChatBaseStyleDark strong {
-  @apply text-gray-100 font-bold !important;
-}
-
-.VAKChatBaseStyleDark em {
-  @apply text-gray-100 italic !important;
-}
-
-.VAKChatBaseStyleDark del {
-  @apply text-gray-100 line-through !important;
-}
-
-.VAKChatBaseStyleDark sup {
-  @apply text-gray-100 align-super text-xs !important;
-}
-
-.VAKChatBaseStyleDark sub {
-  @apply text-gray-100 align-sub text-xs !important;
-}
-
-.VAKChatBaseStyleDark caption {
-  @apply text-gray-100 text-sm text-gray-500 !important;
-  margin-top: 8px !important;
+  @apply border-t border-gray-700 my-4;
 }
 
 .VAKChatBaseStyleDark textarea {
-  @apply text-gray-100 border-0 resize-none w-full focus:outline-none focus:border-0 bg-gray-900 focus:bg-gray-900 text-base font-normal m-0 px-3 py-2 rounded-3xl !important;
+  @apply bg-gray-900 text-base w-full px-3 py-2 rounded-3xl focus:outline-none;
 }
 
-.VAKChatBaseStyleDark button {
-  height: auto !important;
-  width: auto !important;
-  line-height: normal !important;
+/* === Light Theme === */
+.VAKChatBaseStyleLight {
+  @apply text-gray-900 bg-white font-sans;
 }
 
-.VAKChatBaseStyleDark textarea:focus {
-  border: none !important;
-  outline: none !important;
-}
-
-.VAKChatBaseStyleDark textarea:hover {
-  border: none !important;
-  outline: none !important;
-}
-/* Dark theme end */
-
-/* Light theme */
 .VAKChatBaseStyleLight h1 {
-  @apply text-gray-900 text-4xl font-bold !important;
-  margin-top: 24px !important;
-  margin-bottom: 16px !important;
+  @apply text-4xl font-bold mt-6 mb-4;
 }
 
 .VAKChatBaseStyleLight h2 {
-  @apply text-gray-900 text-3xl font-semibold !important;
-  margin-top: 24px !important;
-  margin-bottom: 16px !important;
+  @apply text-3xl font-semibold mt-6 mb-4;
 }
 
 .VAKChatBaseStyleLight h3 {
-  @apply text-gray-900 text-2xl font-medium !important;
-  margin-top: 20px !important;
-  margin-bottom: 12px !important;
+  @apply text-2xl font-medium mt-5 mb-3;
 }
 
 .VAKChatBaseStyleLight h4 {
-  @apply text-gray-900 text-xl font-medium !important;
-  margin-top: 16px !important;
-  margin-bottom: 12px !important;
+  @apply text-xl font-medium mt-4 mb-3;
 }
 
 .VAKChatBaseStyleLight h5 {
-  @apply text-gray-900 text-lg font-medium !important;
-  margin-top: 16px !important;
-  margin-bottom: 8px !important;
+  @apply text-lg font-medium mt-4 mb-2;
 }
 
 .VAKChatBaseStyleLight h6 {
-  @apply text-gray-900 text-base font-medium !important;
-  margin-top: 12px !important;
-  margin-bottom: 8px !important;
+  @apply text-base font-medium mt-3 mb-2;
 }
 
-.VAKChatBaseStyleLight p {
-  @apply text-gray-900 text-base font-normal !important;
-}
-
-.VAKChatBaseStyleLight div {
-  @apply text-gray-900 text-base font-normal;
-}
-
-.VAKChatBaseStyleLight span {
-  @apply text-gray-500 text-sm font-normal !important;
+.VAKChatBaseStyleLight p,
+.VAKChatBaseStyleLight div,
+.VAKChatBaseStyleLight li {
+  @apply text-base leading-relaxed;
 }
 
 .VAKChatBaseStyleLight ul {
-  @apply text-gray-900 list-disc !important;
-  padding-left: 8px !important;
-  margin-top: 8px !important;
-  margin-bottom: 8px !important;
-}
-@media (min-width: 640px) {
-  .VAKChatBaseStyleLight ul {
-    padding-left: 8px !important;
-  }
+  @apply list-disc pl-5 my-2;
 }
 
 .VAKChatBaseStyleLight ol {
-  @apply text-gray-900 list-decimal !important;
-  padding-left: 8px !important;
-  margin-top: 8px !important;
-  margin-bottom: 8px !important;
-}
-
-@media (min-width: 640px) {
-  .VAKChatBaseStyleLight ol {
-    padding-left: 8px !important;
-  }
-}
-
-.VAKChatBaseStyleLight li {
-  @apply text-gray-900 font-normal text-base !important;
-  margin-bottom: 8px !important;
+  @apply list-decimal pl-5 my-2;
 }
 
 .VAKChatBaseStyleLight blockquote {
-  @apply text-gray-900 border-l-4 border-gray-300 italic text-base !important;
-  padding-left: 16px !important;
-  margin-bottom: 16px !important;
+  @apply border-l-4 border-gray-300 pl-4 italic my-4;
 }
 
 .VAKChatBaseStyleLight pre {
-  @apply text-gray-900 bg-gray-200 border border-gray-300 rounded-lg overflow-x-auto text-sm font-mono my-4 !important;
-  padding: 16px !important;
-}
-
-.VAKChatBaseStyleLight pre::-webkit-scrollbar {
-  @apply w-2 h-2 bg-gray-200 rounded-full;
-}
-
-.VAKChatBaseStyleLight pre::-webkit-scrollbar-thumb {
-  @apply bg-gray-400 rounded-full;
-}
-
-.VAKChatBaseStyleLight pre::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-500;
-}
-
-.VAKChatBaseStyleLight pre::-webkit-scrollbar-track {
-  @apply bg-gray-100;
+  @apply bg-gray-100 text-sm font-mono rounded-lg border border-gray-300 overflow-x-auto p-4 my-4;
 }
 
 .VAKChatBaseStyleLight code {
-  @apply text-gray-900 bg-gray-200 rounded font-mono text-sm !important;
-  padding-left: 8px !important;
-  padding-right: 8px !important;
-  padding-top: 4px !important;
-  padding-bottom: 4px !important;
+  @apply bg-gray-200 text-sm font-mono rounded px-2 py-1;
 }
 
 .VAKChatBaseStyleLight a {
-  @apply text-gray-900 underline hover:text-gray-500 text-base !important;
+  @apply underline hover:text-gray-500;
 }
 
 .VAKChatBaseStyleLight table {
-  @apply text-gray-900 min-w-full border-collapse text-base text-base my-4 !important;
-  margin-bottom: 16px !important;
+  @apply table-auto border-collapse w-full my-4 text-sm;
 }
 
 .VAKChatBaseStyleLight th {
-  @apply text-gray-900 bg-gray-100 font-semibold border border-gray-200 text-base !important;
-  padding-left: 16px !important;
-  padding-right: 16px !important;
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
+  @apply bg-gray-100 font-semibold border border-gray-300 px-4 py-2;
 }
 
 .VAKChatBaseStyleLight td {
-  @apply text-gray-900 border border-gray-200 text-base !important;
-  border-bottom: 1px solid #e5e7eb !important;
-  padding-left: 16px !important;
-  padding-right: 16px !important;
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
+  @apply border border-gray-300 px-4 py-2;
 }
 
 .VAKChatBaseStyleLight hr {
-  @apply text-gray-300 border-t-0 border-gray-300 !important;
-  margin-top: 16px !important;
-  margin-bottom: 16px !important;
-}
-
-.VAKChatBaseStyleLight strong {
-  @apply text-gray-900 font-bold !important;
-}
-
-.VAKChatBaseStyleLight em {
-  @apply text-gray-900 italic !important;
-}
-
-.VAKChatBaseStyleLight del {
-  @apply text-gray-900 line-through !important;
-}
-
-.VAKChatBaseStyleLight sup {
-  @apply text-gray-900 align-super text-xs !important;
-}
-
-.VAKChatBaseStyleLight sub {
-  @apply text-gray-900 align-sub text-xs !important;
-}
-
-.VAKChatBaseStyleLight caption {
-  @apply text-gray-900 text-sm text-gray-500 !important;
-  margin-top: 8px !important;
+  @apply border-t border-gray-300 my-4;
 }
 
 .VAKChatBaseStyleLight textarea {
-  @apply text-gray-900 border-0 resize-none w-full focus:outline-none focus:border-0 bg-gray-100 focus:bg-gray-100 text-base font-normal m-0 px-3 py-2 rounded-3xl !important;
+  @apply bg-gray-100 text-base w-full px-3 py-2 rounded-3xl focus:outline-none;
 }
-
-.VAKChatBaseStyleLight button {
-  height: auto !important;
-  width: auto !important;
-  line-height: normal !important;
-}
-
-.VAKChatBaseStyleDark textarea:focus {
-  border: none !important;
-  outline: none !important;
-}
-
-.VAKChatBaseStyleDark textarea:hover {
-  border: none !important;
-  outline: none !important;
-}
-/* Light theme end */
