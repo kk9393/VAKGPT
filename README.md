@@ -14,6 +14,11 @@ VAKGPT is an open-source chat wrapper designed to help developers and founders q
 * **Scalable Design**: Built to support growing user bases and high-volume interactions
 * **Open Source**: Freely available for the community to use, extend, and contribute to
 
+## Tech Stack
+
+* **Frontend**: Built with Next.js for fast, modern web experiences
+* **Backend**: Powered by Python and LangChain for robust AI integration
+* **Database**: Uses MongoDB for scalable data storage
 Whether you're building a quick demo or a production-ready assistant, VAKGPT is built to accelerate your development.
 
 ## Hosted Version
