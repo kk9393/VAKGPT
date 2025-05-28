@@ -55,10 +55,12 @@ npm run dev
 
 We invite developers, researchers, and enthusiasts to contribute to VAKGPT. Join our community to help shape the future of conversational AI.
 
-
 ## Join Community
 
 [![Join our Discord server!](https://invidget.switchblade.xyz/3CS9a9YHfx)](https://discord.gg/3CS9a9YHfx)
 
-
 Join our discussion forum to connect with our community. Let's build the future of conversational AI together!
+
+## Contact
+
+For questions or collaboration, contact: [krishna@vakx.io](mailto:krishna@vakx.io)
