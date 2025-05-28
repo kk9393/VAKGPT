@@ -1,0 +1,159 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+/* === Dark Theme === */
+.VAKChatBaseStyleDark {
+  @apply text-gray-100 bg-gray-900 font-sans;
+}
+
+.VAKChatBaseStyleDark h1 {
+  @apply text-4xl font-bold mt-6 mb-4;
+}
+
+.VAKChatBaseStyleDark h2 {
+  @apply text-3xl font-semibold mt-6 mb-4;
+}
+
+.VAKChatBaseStyleDark h3 {
+  @apply text-2xl font-medium mt-5 mb-3;
+}
+
+.VAKChatBaseStyleDark h4 {
+  @apply text-xl font-medium mt-4 mb-3;
+}
+
+.VAKChatBaseStyleDark h5 {
+  @apply text-lg font-medium mt-4 mb-2;
+}
+
+.VAKChatBaseStyleDark h6 {
+  @apply text-base font-medium mt-3 mb-2;
+}
+
+.VAKChatBaseStyleDark p,
+.VAKChatBaseStyleDark div,
+.VAKChatBaseStyleDark li {
+  @apply text-base leading-relaxed;
+}
+
+.VAKChatBaseStyleDark ul {
+  @apply list-disc pl-5 my-2;
+}
+
+.VAKChatBaseStyleDark ol {
+  @apply list-decimal pl-5 my-2;
+}
+
+.VAKChatBaseStyleDark blockquote {
+  @apply border-l-4 border-gray-700 pl-4 italic my-4;
+}
+
+.VAKChatBaseStyleDark pre {
+  @apply bg-gray-800 text-sm font-mono rounded-lg border border-gray-700 overflow-x-auto p-4 my-4;
+}
+
+.VAKChatBaseStyleDark code {
+  @apply bg-gray-800 text-sm font-mono rounded px-2 py-1;
+}
+
+.VAKChatBaseStyleDark a {
+  @apply underline hover:text-gray-400;
+}
+
+.VAKChatBaseStyleDark table {
+  @apply table-auto border-collapse w-full my-4 text-sm;
+}
+
+.VAKChatBaseStyleDark th {
+  @apply bg-gray-900 font-semibold border border-gray-700 px-4 py-2;
+}
+
+.VAKChatBaseStyleDark td {
+  @apply border border-gray-700 px-4 py-2;
+}
+
+.VAKChatBaseStyleDark hr {
+  @apply border-t border-gray-700 my-4;
+}
+
+.VAKChatBaseStyleDark textarea {
+  @apply bg-gray-900 text-base w-full px-3 py-2 rounded-3xl focus:outline-none;
+}
+
+/* === Light Theme === */
+.VAKChatBaseStyleLight {
+  @apply text-gray-900 bg-white font-sans;
+}
+
+.VAKChatBaseStyleLight h1 {
+  @apply text-4xl font-bold mt-6 mb-4;
+}
+
+.VAKChatBaseStyleLight h2 {
+  @apply text-3xl font-semibold mt-6 mb-4;
+}
+
+.VAKChatBaseStyleLight h3 {
+  @apply text-2xl font-medium mt-5 mb-3;
+}
+
+.VAKChatBaseStyleLight h4 {
+  @apply text-xl font-medium mt-4 mb-3;
+}
+
+.VAKChatBaseStyleLight h5 {
+  @apply text-lg font-medium mt-4 mb-2;
+}
+
+.VAKChatBaseStyleLight h6 {
+  @apply text-base font-medium mt-3 mb-2;
+}
+
+.VAKChatBaseStyleLight p,
+.VAKChatBaseStyleLight div,
+.VAKChatBaseStyleLight li {
+  @apply text-base leading-relaxed;
+}
+
+.VAKChatBaseStyleLight ul {
+  @apply list-disc pl-5 my-2;
+}
+
+.VAKChatBaseStyleLight ol {
+  @apply list-decimal pl-5 my-2;
+}
+
+.VAKChatBaseStyleLight blockquote {
+  @apply border-l-4 border-gray-300 pl-4 italic my-4;
+}
+
+.VAKChatBaseStyleLight pre {
+  @apply bg-gray-100 text-sm font-mono rounded-lg border border-gray-300 overflow-x-auto p-4 my-4;
+}
+
+.VAKChatBaseStyleLight code {
+  @apply bg-gray-200 text-sm font-mono rounded px-2 py-1;
+}
+
+.VAKChatBaseStyleLight a {
+  @apply underline hover:text-gray-500;
+}
+
+.VAKChatBaseStyleLight table {
+  @apply table-auto border-collapse w-full my-4 text-sm;
+}
+
+.VAKChatBaseStyleLight th {
+  @apply bg-gray-100 font-semibold border border-gray-300 px-4 py-2;
+}
+
+.VAKChatBaseStyleLight td {
+  @apply border border-gray-300 px-4 py-2;
+}
+
+.VAKChatBaseStyleLight hr {
+  @apply border-t border-gray-300 my-4;
+}
+
+.VAKChatBaseStyleLight textarea {
+  @apply bg-gray-100 text-base w-full px-3 py-2 rounded-3xl focus:outline-none;
+}
