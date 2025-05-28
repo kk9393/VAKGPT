@@ -5,6 +5,11 @@ VAKGPT is an open-source chat wrapper designed to help developers and founders q
 ## Key Features:
 
 * **Chat Wrapper for LLMs**: Plug in your preferred language models and get started instantly
+* **Supported Models**:  
+  - meta-llama/Llama-3.3-70B-Instruct  
+  - meta-llama/Llama-3.2-90B-Vision-Instruct  
+  - meta-llama/Meta-Llama-3.1-405B-Instruct  
+  - deepseek-chat
 * **Modular Architecture**: Frontend and backend run as separate services—use them independently or together
 * **Scalable Design**: Built to support growing user bases and high-volume interactions
 * **Open Source**: Freely available for the community to use, extend, and contribute to
